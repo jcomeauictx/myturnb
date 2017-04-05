@@ -1,7 +1,7 @@
 SERVICE := myturn
 BACKEND := node-$(SERVICE)-api
 NGINX_CONFIG := /etc/nginx
-SITE_ROOT := /var/www/myapp
+SITE_ROOT := /var/www/myapp/code
 SITE_CONFIG := $(NGINX_CONFIG)/sites-available/$(SERVICE)
 SITE_ACTIVE := $(NGINX_CONFIG)/sites-enabled/$(SERVICE)
 TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
