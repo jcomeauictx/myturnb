@@ -9,7 +9,7 @@ DRYRUN ?= --dry-run  # for rsync
 export
 install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
 siteinstall: ~/src/myturnb | $(SITE_ROOT)
-	cd $< && sudo rsync -avuz $(DRYRUN) \
+	cd $< && sudo rsync -avcz $(DRYRUN) \
 	 --exclude=configuration --exclude='.git*' \
 	 . $(SITE_ROOT)/
 /etc/init.d/%: %
