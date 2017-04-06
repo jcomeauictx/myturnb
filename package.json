@@ -38,7 +38,7 @@
     "forever": "0.15.3"
   },
   "noAnalyze": true,
-  "license": "Apache",
+  "license": "Apache-1.1",
   "engines": {
     "node": ">=0.6.14"
   },
