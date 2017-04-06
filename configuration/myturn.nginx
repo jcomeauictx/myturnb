@@ -6,7 +6,7 @@ server {
     listen [::]:80 default_server ipv6only=on;
 
     server_name myturn.mobi *.myturn.old;
-    root        /var/www/myapp/code/public;
+    root        /var/www/myturn/public;
     index       index.html;
 
     access_log  /var/log/nginx/myturn-access.log;

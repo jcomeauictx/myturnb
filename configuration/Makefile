@@ -1,7 +1,7 @@
 SERVICE := myturn
 BACKEND := node-$(SERVICE)-api
 NGINX_CONFIG := /etc/nginx
-SITE_ROOT := /var/www/myapp/code
+SITE_ROOT := /var/www/myturn
 SITE_CONFIG := $(NGINX_CONFIG)/sites-available/$(SERVICE)
 SITE_ACTIVE := $(NGINX_CONFIG)/sites-enabled/$(SERVICE)
 TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
@@ -29,4 +29,4 @@ $(SITE_CONFIG): myturn.nginx
 restart_nginx: /etc/init.d/nginx
 	sudo $< restart
 diff:
-	diff -r -x '.git*' .. /var/www/myapp/code
+	diff -r -x '.git*' .. /var/www/myturn
