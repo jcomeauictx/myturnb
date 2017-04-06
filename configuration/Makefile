@@ -17,7 +17,7 @@ siteinstall: | $(SITE_ROOT)
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \
 	  echo $@ unchanged >&2; \
-	 else
+	 else \
 	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
 	  sudo mv $@ $@.$(TIMESTAMP); \
 	 fi; \
