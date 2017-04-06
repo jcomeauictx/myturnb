@@ -1,15 +1,22 @@
 {
   "name": "myturn",
-  "version": "0.1.0",
-  "author": "David Stodolsky",
+  "version": "0.1.1",
+  "author": {
+    "name": "David Stodolsky",
+    "email": "dss@secureid.net"
+  },
   "description": "A meeting facilitation application",
-  "contributors": [ 
+  "contributors": [
     {
       "name": "David Stodolsky",
       "email": "dss@secureid.net"
+    },
+    {
+      "name": "John Comeau",
+      "email": "jc@unternet.net"
     } 
   ],  
-  "main": "./api.js",  
+  "main": "./api.js",
   "keywords": [
     "myturn",
     "meeting",
@@ -18,7 +25,7 @@
     "protect",
     "perform"
   ],
-  "dependencies" : {
+  "dependencies": {
     "express": "2.5.7",
     "jade": "0.22.0",
     "mongojs": "0.4.3",
