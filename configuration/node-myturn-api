@@ -65,16 +65,15 @@ start() {
 	fi
 
 	echo  "Starting node-myturn-api"
-
-	$APPDIR/node_modules/forever/bin/forever \
-	-a \
-	-l $LOGFILE \
-	--minUptime $MIN_UPTIME \
-	--spinSleepTime $SPIN_SLEEP_TIME \
-	--killSignal $KILL_SIGNAL \
-	 \
-	--uid node-myturn-api \
-	start api.js  --local 2>&1 >/dev/null
+	cd $APPDIR
+	node_modules/forever/bin/forever \
+	 -a \
+	 -l $LOGFILE \
+	 --minUptime $MIN_UPTIME \
+	 --spinSleepTime $SPIN_SLEEP_TIME \
+	 --killSignal $KILL_SIGNAL \
+	 --uid node-myturn-api \
+	 start api.js  --local 2>&1 >/dev/null
 	
 	RETVAL=$?
 
