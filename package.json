@@ -38,6 +38,6 @@
     "node": ">=0.6.14"
   },
   "scripts": {
-    "install": "cd configuration && make siteinstall install"
+    "install": "make install"
   }
 }
