@@ -6,6 +6,10 @@
     "email": "dss@secureid.net"
   },
   "description": "A meeting facilitation application",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jcomeauictx/myturnb.git"
+  },
   "contributors": [
     {
       "name": "David Stodolsky",
@@ -16,7 +20,7 @@
       "email": "jc@unternet.net"
     }
   ],
-  "main": "./api.js",
+  "main": "api.js",
   "keywords": [
     "myturn",
     "meeting",
