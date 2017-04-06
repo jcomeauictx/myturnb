@@ -13,18 +13,18 @@ siteinstall: ~/src/myturnb | $(SITE_ROOT)
 	 --exclude=configuration --exclude='.git*' \
 	 . $(SITE_ROOT)/
 /etc/init.d/%: %
-	[ -e "$@" ] && diff -q $< $@ || sudo mv $@ $@.$(TIMESTAMP)
+	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
 	[ -e "$@" ] || sudo cp $< $@
 /etc/rc2.d/S01%: /etc/init.d/%
 	sudo update-rc.d $* enable
 startup_service: /etc/init.d/$(BACKEND)
-	sudo $< start
+	sudo $< restart
 $(SITE_ROOT):
 	sudo mkdir -p $@
 $(SITE_ACTIVE): $(SITE_CONFIG)
 	cd $(dir $@) && sudo ln -sf ../sites-available/$(notdir $<) .
 $(SITE_CONFIG): myturn.nginx
-	[ -e "$@" ] && diff -q $< $@ || sudo mv $@ $@.$(TIMESTAMP)
+	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
 	[ -e "$@" ] || sudo cp $< $@
 restart_nginx: /etc/init.d/nginx
 	sudo $< restart
