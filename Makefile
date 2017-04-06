@@ -1,3 +1,3 @@
 install:
 	echo Installing MyTurn from $(PWD)
-	cd configure && $(MAKE) DRYRUN= siteinstall install
+	cd configuration && $(MAKE) DRYRUN= siteinstall install
