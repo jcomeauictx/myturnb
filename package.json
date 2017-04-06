@@ -14,8 +14,8 @@
     {
       "name": "John Comeau",
       "email": "jc@unternet.net"
-    } 
-  ],  
+    }
+  ],
   "main": "./api.js",
   "keywords": [
     "myturn",
