@@ -14,7 +14,14 @@ siteinstall: | $(SITE_ROOT)
 	 --exclude=configuration --exclude='.git*' \
 	 . $(SITE_ROOT)/
 /etc/init.d/%: %
-	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
+	if [ -e "$@" ]; then \
+	 if diff -q $< $@; then \
+	  echo $@ unchanged >&2; \
+	 else
+	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
+	  sudo mv $@ $@.$(TIMESTAMP); \
+	 fi; \
+	fi
 	[ -e "$@" ] || sudo cp $< $@
 /etc/rc2.d/S01%: /etc/init.d/%
 	sudo update-rc.d $* defaults
@@ -25,7 +32,14 @@ $(SITE_ROOT):
 $(SITE_ACTIVE): $(SITE_CONFIG)
 	cd $(dir $@) && sudo ln -sf ../sites-available/$(notdir $<) .
 $(SITE_CONFIG): myturn.nginx
-	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
+	if [ -e "$@" ]; then \
+	 if diff -q $< $@; then \
+	  echo $@ unchanged >&2; \
+	 else \
+	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
+	  sudo mv $@ $@.$(TIMESTAMP); \
+	 fi; \
+	fi
 	[ -e "$@" ] || sudo cp $< $@
 restart_nginx: /etc/init.d/nginx
 	sudo $< restart
