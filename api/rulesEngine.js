@@ -17,6 +17,7 @@ function rulesEngine(room, messageDispatcher) {
     this.activeSpeaker = null;
     this.discussionRepeating = false;
     this.discussionEnding = false;
+    this.discussionClockRunning = false;
     this.callback = null;
 }
 
@@ -74,7 +75,9 @@ rulesEngine.prototype.doRequestToSpeak = function(user, data) {
 }
 
 rulesEngine.prototype.doDiscussionOver = function(user, data) {
+    console.log("discussion over");
     this.discussionEnding = true;
+    this.discussionClockRunning = false;
     return true;
 }
 
@@ -112,7 +115,9 @@ rulesEngine.prototype.reprocess = function() {
     // enforce discussion length if it hasn't been done already
     var context = this;
     if(nextSpeakerAction && !this.discussionOverActionId) {
+        console.log("discussion beginning");
         this.discussionBeginning = now;
+	this.discussionClockRunning = true;
         this.discussionOverActionId = setTimeout(function() {
             context.doPersistUsers.call(context);
         },
