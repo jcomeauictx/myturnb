@@ -33,19 +33,19 @@ Ext.define("testing.view.Discussion", {
                 text: 'My Turn',
                 listeners: {
                 	element: 'element',
-                	longpress: 'abosorbEvent',
-                	taphold: 'abosorbEvent',
-                	touchstart: 'abosorbEvent',
-                	touchmove: 'abosorbEvent',
-                	touchend: 'abosorbEvent',
-                	touchcancel: 'abosorbEvent'
+                	longpress: 'absorbEvent',
+                	taphold: 'absorbEvent',
+                	touchstart: 'absorbEvent',
+                	touchmove: 'absorbEvent',
+                	touchend: 'absorbEvent',
+                	touchcancel: 'absorbEvent'
                 }
-//                icon: 'resources/images/icons/myturn-logo.png'
+		// icon is set as background image in ../controller/Discussion.js
             }
          ]
     },
     
-    abosorbEvent: function (e) {
+    absorbEvent: function (e) {
     	e.preventDefault();
     }
 });
