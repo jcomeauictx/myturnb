@@ -27,6 +27,6 @@ Complete documentation:
 
 http://doc.myturn.mobi
 
-##For developers##
+## For developers
 
 - Check for errors under /var/log/node-myturn-api.log, /var/log/nginx/myturn-error.log, and using right-click Inspect under Chromium, or similar JavaScript console functionality under other browsers.
