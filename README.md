@@ -29,4 +29,10 @@ http://doc.myturn.mobi
 
 ## For developers
 
-- Check for errors under /var/log/node-myturn-api.log, /var/log/nginx/myturn-error.log, and using right-click Inspect under Chromium, or similar JavaScript console functionality under other browsers.
+Check for errors under /var/log/node-myturn-api.log, /var/log/nginx/myturn-error.log, and using right-click Inspect under Chromium, or similar JavaScript console functionality under other browsers.
+
+If installing with `npm` version 3 or higher, make sure to use the `--legacy-bundling` option:
+
+    npm install --legacy-bundling jcomeauictx/myturnb
+
+Without this, the `node-myturn-api` startup script will not be able to find the `forever` binary.
