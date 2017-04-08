@@ -41,7 +41,7 @@ rulesEngine.prototype.stopListening = function() {
 
 rulesEngine.prototype.receiveClientMessage = function(user, data) {
     var type = data.type;
-    console.log("RulesEngine received client " + user + " message " + type);
+    console.log("RulesEngine received client " + user.name + " message " + type);
     var shouldReprocess = false;
     if(type == 'requestToSpeak') {
         shouldReprocess = this.doRequestToSpeak(user, data);
