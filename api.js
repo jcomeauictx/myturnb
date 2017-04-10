@@ -250,6 +250,7 @@ function persistRoomData(room) {
         var userObj = db.load(userIds[i]);
         roomObj.users.push(userObj);
     }
+    /* commenting out nonexistent method call
     db.savePersistent('rooms', roomObj, function(err) {
         var msg = err ? ('error persisting users: ' + err) : 'users persisted';
         console.log(msg);
@@ -260,6 +261,7 @@ function persistRoomData(room) {
             });
         }
     });
+    */
 }
 
 function cleanRoomData(room) {
