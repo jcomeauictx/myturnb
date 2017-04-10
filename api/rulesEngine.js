@@ -126,6 +126,8 @@ rulesEngine.prototype.reprocess = function() {
     }
     // check for phantom groups (e.g. time was over but no user responded to repeat/terminate dialog)
     var cleanupNecessary = this.isInconsistent();
+    console.log("cleanup necessary: " + cleanupNecessary);
+    console.log("discussion ending: " + this.discussionEnding);
     var nextAction = cleanupNecessary || this.discussionEnding ? this.getEndingDiscussion() :
         this.discussionRepeating ? this.getRepeatingDiscussion() : 
             nextSpeakerAction ? nextSpeakerAction : this.getWaitingForSpeaker();
