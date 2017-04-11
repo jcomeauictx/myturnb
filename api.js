@@ -250,6 +250,10 @@ function persistRoomData(room) {
         var userObj = db.load(userIds[i]);
         roomObj.users.push(userObj);
     }
+    messageDispatcherInstance.sendMessageToRoom(room, {
+        messageType: 'usersSaved',
+        data: roomObj.users
+    });
     /* commenting out nonexistent method call
     db.savePersistent('rooms', roomObj, function(err) {
         var msg = err ? ('error persisting users: ' + err) : 'users persisted';
