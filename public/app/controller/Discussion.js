@@ -1,4 +1,4 @@
-
+// client side code
 Ext.define('testing.controller.Discussion', {
     extend: 'Ext.app.Controller',
     requires: [
@@ -30,15 +30,17 @@ Ext.define('testing.controller.Discussion', {
     },
 
     doDiscussionOver: function (data) {
-        console.log("doDiscussionOver()");
+        console.log("flowdebug: doDiscussionOver()");
 	// 2017-04-10:17:38 only time this fires is if timer runs out with
 	// no speaker active, and the "My Turn" button is clicked.
         Ext.Msg.alert('', 'The discussion is over.');
         // a group was deleted on server, time to reload
         Ext.getStore('groups').load();
+	this.doUsersSaved(data);
     },
 
     doUsersSaved: function(data) {
+       console.log("flowdebug: doUsersSaved()");
        this.clearTick();
        this.initMessageScreen();
     },

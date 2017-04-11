@@ -1,8 +1,4 @@
-
-/**
- * Module dependencies.
- */
-
+// server side code
 var express = require('express'),
     routes = require('./routes'),
     user = require('./api/models/user'),

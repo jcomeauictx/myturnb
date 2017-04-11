@@ -17,6 +17,8 @@ APPDIR=/var/www/myturn  # directory root, for finding `forever` executable
 #Setup Environment variables (if any)
 
 export FOREVER_ROOT=/root/.forever  # ensure `forever` can always find root
+NODE_PATH=/usr/local/lib/node_modules:/usr/lib/node_modules
+export NODE_PATH=/usr/local/lib/node_modules/myturn/node_modules:$NODE_MODULES
 mkdir -p $FOREVER_ROOT
 
 # Check if any of $pid (could be plural) are running

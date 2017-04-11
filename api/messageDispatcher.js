@@ -1,3 +1,4 @@
+// server side code
 var sys = require('util'),
     events = require('events');
 
@@ -15,10 +16,14 @@ messageDispatcher.prototype.setIo = function(io) {
 
 messageDispatcher.prototype.sendMessageFromClient = function(id, data) {
     data.clientId = id;
+    console.log("flowdebug: messageDispatcher: sendMessageFromClient " +
+                id + ": " + JSON.stringify(data));
     this.emit('message', data);
 }
 
 messageDispatcher.prototype.sendMessageToClient = function(id, data) {
+    console.log("flowdebug: messageDispatcher: sendMessageToClient " +
+                id + ": " + JSON.stringify(data));
     var emitter = this.io && this.io.sockets && this.io.sockets.sockets ? this.io.sockets.sockets[id] : null;
     if  (emitter) {
         emitter.emit('message', data);
@@ -26,6 +31,8 @@ messageDispatcher.prototype.sendMessageToClient = function(id, data) {
 }
 
 messageDispatcher.prototype.sendMessageToRoom = function(room, message) {
+    console.log("flowdebug: messageDispatcher: sendMessageToRoom " +
+                room + ": " + JSON.stringify(message));
    this.io.sockets.in(room).emit('message', message);
 }
 

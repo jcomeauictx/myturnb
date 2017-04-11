@@ -12,7 +12,7 @@ Ext.define('Ext.log.writer.Console', {
         var message = event.message,
             priority = event.priorityName,
             consoleMethod;
-        console.log("doWrite: raw message: " + message);
+        console.log("doWrite: raw message: " + JSON.stringify(message));
         if (priority === 'error' && this.getThrowOnErrors()) {
             throw new Error(message);
         }

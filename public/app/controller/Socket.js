@@ -1,4 +1,4 @@
-
+// client side code
 Ext.define('testing.controller.Socket', {
     extend: 'Ext.app.Controller',
     socket: null,
@@ -16,7 +16,7 @@ Ext.define('testing.controller.Socket', {
 
     doLogout: function() {
         // in doLogin() we listen to resulting disconnect event
-	console.log("logging out after end of discussion");
+	console.log("flowdebug: logging out after end of discussion");
         this.socket.disconnect();
     },
 

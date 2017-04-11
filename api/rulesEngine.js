@@ -1,3 +1,4 @@
+// server side code
 /**
  * State machine like. Client messages change state and initiate a timed callback which emits a message to back to client.
  */
@@ -41,7 +42,7 @@ rulesEngine.prototype.stopListening = function() {
 
 rulesEngine.prototype.receiveClientMessage = function(user, data) {
     var type = data.type;
-    console.log("flowdebug: RulesEngine received client " +
+    this.log("flowdebug: RulesEngine received client " +
 		 user.name + " message " + type);
     var shouldReprocess = false;
     if(type == 'requestToSpeak') {
@@ -77,7 +78,7 @@ rulesEngine.prototype.doRequestToSpeak = function(user, data) {
 }
 
 rulesEngine.prototype.doDiscussionOver = function(user, data) {
-    console.log("flowdebug: discussion over");
+    this.log("flowdebug: discussion over");
     this.discussionEnding = true;
     this.discussionClockRunning = false;
     return true;
@@ -117,7 +118,7 @@ rulesEngine.prototype.reprocess = function() {
     // enforce discussion length if it hasn't been done already
     var context = this;
     if(nextSpeakerAction && !this.discussionOverActionId) {
-        console.log("flowdebug: discussion beginning");
+        this.log("flowdebug: discussion beginning");
         this.discussionBeginning = now;
 	this.discussionClockRunning = true;
         this.discussionOverActionId = setTimeout(function() {
@@ -127,8 +128,8 @@ rulesEngine.prototype.reprocess = function() {
     }
     // check for phantom groups (e.g. time was over but no user responded to repeat/terminate dialog)
     var cleanupNecessary = this.isInconsistent();
-    console.log("flowdebug: cleanup necessary: " + cleanupNecessary);
-    console.log("flowdebug: discussion ending: " + this.discussionEnding);
+    this.log("flowdebug: cleanup necessary: " + cleanupNecessary);
+    this.log("flowdebug: discussion ending: " + this.discussionEnding);
     var nextAction = cleanupNecessary || this.discussionEnding ? this.getEndingDiscussion() :
         this.discussionRepeating ? this.getRepeatingDiscussion() : 
             nextSpeakerAction ? nextSpeakerAction : this.getWaitingForSpeaker();
@@ -209,7 +210,7 @@ rulesEngine.prototype.doRepeatingDiscussion = function() {
 }
 
 rulesEngine.prototype.doEndingDiscussion = function() {
-    console.log("flowdebug: doEndingDiscussion()");
+    this.log("flowdebug: doEndingDiscussion()");
     this.messageDispatcher.emit('discussionOverInServer', this.room);
     this.messageDispatcher.sendMessageToRoom(this.room, {
         messageType: 'discussionOver'
@@ -227,7 +228,7 @@ rulesEngine.prototype.doWaitingForSpeaker = function() {
 
 rulesEngine.prototype.doPersistUsers = function() {
     // discussion is over, make sure no further actions are performed
-    console.log("flowdebug: doPersistUsers()");
+    this.log("flowdebug: doPersistUsers()");
     clearTimeout(this.nextTimedActionId);
     clearTimeout(this.discussionOverActionId);
     this.updateActiveSpeaker(new Date().getTime());

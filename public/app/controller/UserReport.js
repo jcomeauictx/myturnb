@@ -1,4 +1,4 @@
-
+// client side code
 Ext.define('testing.controller.UserReport', {
     extend: 'Ext.app.Controller',
     requires: ['Ext.MessageBox'],

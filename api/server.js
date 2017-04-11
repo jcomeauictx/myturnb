@@ -1,3 +1,4 @@
+// server side code
 var express = require('express'),
     app = module.exports = express.createServer(),
     room = require('./models/room'),
