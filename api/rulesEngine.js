@@ -227,6 +227,7 @@ rulesEngine.prototype.doWaitingForSpeaker = function() {
 
 rulesEngine.prototype.doPersistUsers = function() {
     // discussion is over, make sure no further actions are performed
+    console.log("doPersistUsers()");
     clearTimeout(this.nextTimedActionId);
     clearTimeout(this.discussionOverActionId);
     this.updateActiveSpeaker(new Date().getTime());
