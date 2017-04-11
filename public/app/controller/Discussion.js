@@ -39,7 +39,7 @@ Ext.define('testing.controller.Discussion', {
         Ext.Msg.alert('', 'The discussion is over.');
         // a group was deleted on server, time to reload
         Ext.getStore('groups').load();
-	this.getMainView().setActiveItem(this.getUserReportView());
+	this.getUserReportView().doUsersSaved(data);
     },
 
     doUsersSaved: function(data) {

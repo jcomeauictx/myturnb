@@ -18,7 +18,6 @@ function rulesEngine(room, messageDispatcher) {
     this.activeSpeaker = null;
     this.discussionRepeating = false;
     this.discussionEnding = false;
-    this.discussionClockRunning = false;
     this.callback = null;
 }
 
@@ -80,7 +79,6 @@ rulesEngine.prototype.doRequestToSpeak = function(user, data) {
 rulesEngine.prototype.doDiscussionOver = function(user, data) {
     this.log("flowdebug: discussion over");
     this.discussionEnding = true;
-    this.discussionClockRunning = false;
     return true;
 }
 
@@ -120,9 +118,8 @@ rulesEngine.prototype.reprocess = function() {
     if(nextSpeakerAction && !this.discussionOverActionId) {
         this.log("flowdebug: discussion beginning");
         this.discussionBeginning = now;
-	this.discussionClockRunning = true;
         this.discussionOverActionId = setTimeout(function() {
-            context.doEndingDiscussion.call(context);
+            context.doPersistUsers.call(context);
         },
         this.discussionLength);
     }
