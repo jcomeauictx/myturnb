@@ -121,7 +121,7 @@ rulesEngine.prototype.reprocess = function() {
         this.discussionBeginning = now;
 	this.discussionClockRunning = true;
         this.discussionOverActionId = setTimeout(function() {
-            context.doPersistUsers.call(context);
+            context.doEndingDiscussion.call(context);
         },
         this.discussionLength);
     }
@@ -227,7 +227,7 @@ rulesEngine.prototype.doWaitingForSpeaker = function() {
 
 rulesEngine.prototype.doPersistUsers = function() {
     // discussion is over, make sure no further actions are performed
-    console.log("doPersistUsers()");
+    console.log("flowdebug: doPersistUsers()");
     clearTimeout(this.nextTimedActionId);
     clearTimeout(this.discussionOverActionId);
     this.updateActiveSpeaker(new Date().getTime());
