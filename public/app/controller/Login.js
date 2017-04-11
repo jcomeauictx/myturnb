@@ -1,4 +1,4 @@
-
+// client side code
 Ext.define('testing.controller.Login', {
     extend: 'Ext.app.Controller',
     requires: [

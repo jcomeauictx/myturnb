@@ -12,7 +12,9 @@ Ext.define('testing.controller.Discussion', {
 	    nativeTickSound: null,
 	    nativeBeepSound: null,
         refs: {
-        	discussionView: 'discussionView',
+            mainView: "mainView",
+            discussionView: "discussionView",
+            userReportView: "userReportView",
             addToQueueButton: "button[action=addToQueueEvent]",
             messageLabel: "#messageLabel",
             timeRemainingLabel: "#timeRemainingLabel",
@@ -33,10 +35,11 @@ Ext.define('testing.controller.Discussion', {
         console.log("flowdebug: doDiscussionOver()");
 	// 2017-04-10:17:38 only time this fires is if timer runs out with
 	// no speaker active, and the "My Turn" button is clicked.
+	this.clearTick();
         Ext.Msg.alert('', 'The discussion is over.');
         // a group was deleted on server, time to reload
         Ext.getStore('groups').load();
-	this.doUsersSaved(data);
+	this.getMainView().setActiveItem(this.getUserReportView());
     },
 
     doUsersSaved: function(data) {
