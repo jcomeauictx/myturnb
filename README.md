@@ -29,7 +29,7 @@ http://doc.myturn.mobi
 
 ## For developers
 
-Check for errors under /var/log/node-myturn-api.log, /var/log/nginx/myturn-error.log, and using right-click Inspect under Chromium, or similar JavaScript console functionality under other browsers.
+Check for errors under `/var/log/node-myturn-api.log`, `/var/log/nginx/myturn-error.log`, and using right-click Inspect under Chromium, or similar JavaScript console functionality under other browsers.
 
 To install this on a DigitalOcean droplet running Debian, do the following, of
 course replacing `jcomeau` with your own username:
