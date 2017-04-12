@@ -34,7 +34,7 @@ Check for errors under `/var/log/node-myturn-api.log`, `/var/log/nginx/myturn-er
 To install this on a DigitalOcean droplet running Debian, do the following, of
 course replacing `jcomeau` with your own username:
 
-- `jcomeau@old.myturn:~$ sudo usermod -a -G staff jcomeau`
+- `sudo usermod -a -G staff jcomeau`
 
 - Logout and log back in again so the groups associations are refreshed.
 
