@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">
+navigator.vibrate = navigator.vibrate || 
+    navigator.webkitVibrate || 
+    navigator.mozVibrate || 
+    navigator.msVibrate;
+console.log("navigator.vibrate: " + navigator.vibrate);
+window.addEventListener("load", function() {
+    var node = document.getElementById("status"), newStatus;
+    console.log("node: " + node);
+    if (navigator.vibrate) {
+        navigator.vibrate([1000, 500, 1000, 500, 1000]);
+        newStatus = document.createTextNode("Vibration test complete");
+    } else {
+        newStatus = document.createTextNode("Vibration not supported");
+    }
+    console.log("replacing page text with " + newStatus);
+    node.replaceChild(newStatus, node.firstChild);
+});
+</script>
+</head>
+<body>
+    <div id="status">Vibration test is starting...</div>
+</body>
+</html>
+<!--
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+-->
