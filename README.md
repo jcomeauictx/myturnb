@@ -10,7 +10,7 @@
 
 5. Press "Submit."
 
-6. Enter your name after "Name" and then press "Login". 
+6. Enter your name after "Name" and then press "Join". 
 
 7. The Discussion Page will appear. Press "My Turn" when you wish to speak. Hold the Button until you finish speaking. It is like a "Push-to-Talk" button, but one that is not active until you get a beep.
 
@@ -19,7 +19,7 @@
 
 1. Select the name of your discussion by pressing the downward pointing triangle after "Group". A list will appear. Select the Group name and press “Done".
 
-2. Enter your name after "Name" and then Press "Login". 
+2. Enter your name after "Name" and then Press "Join". 
 
 3. The Discussion Page will appear. Press "My Turn" when you wish to speak. Hold the Button until you finish speaking. It is like a "Push-to-Talk" button, but one that is not active until you get a beep.
 

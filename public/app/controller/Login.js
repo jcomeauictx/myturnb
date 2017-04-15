@@ -32,7 +32,7 @@ Ext.define('testing.controller.Login', {
     },
 
     doReadme: function () {
-    	var url = testing.util.UrlUtils.getBaseUrl() + 'data/readme.json';
+    	var url = testing.util.UrlUtils.getBaseUrl() + 'README.md';
         Ext.Ajax.request({
             disableCaching: false,
             url: url,
