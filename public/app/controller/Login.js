@@ -52,10 +52,10 @@ Ext.define('testing.controller.Login', {
                     modal: true,
                     hideOnMaskTap: true,
                     centered: true,
-                    height: '70%',
+                    height: '90%',
                     width: '90%',
                     scrollable: {
-                        direcion: 'vertical'
+                        direction: 'vertical'
                     }
                 });
                 /*var text = Ext.create('Ext.field.TextArea', {
