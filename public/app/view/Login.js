@@ -69,7 +69,7 @@ Ext.define("testing.view.Login", {
                             {
                                 xtype: 'button',
                                 action: 'logoutEvent',
-                                text: 'Logout'
+                                text: 'Leave'
                             },
                             /*
                             {
