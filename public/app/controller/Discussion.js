@@ -199,6 +199,7 @@ Ext.define('testing.controller.Discussion', {
             });
         }
         this.doCordovaLoaded();
+        this.doIntro();
     },
     
     doCordovaLoaded: function() {
