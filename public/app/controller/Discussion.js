@@ -49,6 +49,7 @@ Ext.define('testing.controller.Discussion', {
        console.log("flowdebug: doUsersSaved()");
        this.clearTick();
        this.initMessageScreen();
+       this.doIntro();
     },
 
     doNewSpeaker: function (data) {
@@ -77,7 +78,6 @@ Ext.define('testing.controller.Discussion', {
     initMessageScreen: function () {
         this.getMessageLabel().setHtml('Waiting for New Speaker');
         this.getTimeRemainingLabel().setHtml('');
-        //this.doIntro();
     },
 
     clearTick: function () {
@@ -236,7 +236,7 @@ Ext.define('testing.controller.Discussion', {
         // first plays are slow so we do this at launch
         tickMedia.play();
         beepMedia.play();
-        introMedia.play();
+        //introMedia.play();
         Ext.destroy(this.getTickSound());
         Ext.destroy(this.getBeepSound());
         Ext.destroy(this.getIntroSound());
