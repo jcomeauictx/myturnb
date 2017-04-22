@@ -39,3 +39,7 @@ course replacing `jcomeau` with your own username:
 - Logout and log back in again so the groups associations are refreshed.
 
 - `NPM_CONFIG_PREFIX=/usr/local npm install -g jcomeauictx/myturnb`
+
+When forking this project, or merging a pull request, make sure to change the
+references to the repository owner (jcomeauictx in my case) to your own in this
+`README.md` file and in `package.json`.
