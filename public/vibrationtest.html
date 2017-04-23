@@ -5,14 +5,15 @@
 navigator.vibrate = navigator.vibrate || 
     navigator.webkitVibrate || 
     navigator.mozVibrate || 
-    navigator.msVibrate;
+    navigator.msVibrate ||
+    (navigator.notification ? navigator.notification.vibrate : undefined);
 console.log("navigator.vibrate: " + navigator.vibrate);
 window.addEventListener("load", function() {
-    var node = document.getElementById("status"), newStatus;
+    var node = document.getElementById("status"), result, newStatus;
     console.log("node: " + node);
     if (navigator.vibrate) {
-        navigator.vibrate([1000, 500, 1000, 500, 1000]);
-        newStatus = document.createTextNode("Vibration test complete");
+        result = navigator.vibrate([1000, 500, 1000, 500, 1000]);
+        newStatus = document.createTextNode("Vibration supported: " + result);
     } else {
         newStatus = document.createTextNode("Vibration not supported");
     }
