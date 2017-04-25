@@ -1,4 +1,19 @@
 // client side code
+
+// initialize vibration API for older browsers
+navigator.vibrate = navigator.vibrate || 
+    navigator.webkitVibrate || 
+    navigator.mozVibrate || 
+    navigator.msVibrate ||
+    (navigator.notification ? navigator.notification.vibrate : undefined);
+// but get rid of false desktop Chrome support -- it can't really vibrate
+if (!navigator.userAgent.match(/(Mobi|SCH-I800)/)) {
+    console.log("desktop browser " + navigator.userAgent +
+                ": disabling vibration");
+    navigator.vibrate = undefined;
+}
+console.log("vibration enabled: " + navigator.vibrate);
+
 Ext.define('testing.controller.Discussion', {
     extend: 'Ext.app.Controller',
     requires: [
@@ -100,9 +115,13 @@ Ext.define('testing.controller.Discussion', {
     },
     
     crossPlatformPlay: function(soundObject) {
-        if (EnvUtils.isNative()) {
-            var soundSrc = soundObject.getUrl();
-            var url = testing.util.UrlUtils.getBaseUrl() + soundSrc;
+        var sound = soundObject.getUrl();
+        console.log("playing " + sound);
+        if (Audio) {
+            console.log("using Audio API");
+            new Audio(soundObject.getUrl()).play();
+        } else if (EnvUtils.isNative()) {
+            var url = testing.util.UrlUtils.getBaseUrl() + sound;
             var media = new Media(
                 url, 
                 function() {}, 
@@ -117,19 +136,24 @@ Ext.define('testing.controller.Discussion', {
     },
     
     doBeep: function() {
-        if (EnvUtils.isNative()) {
+        console.log("doBeep()");
+        if (navigator.vibrate) {
+            console.log("vibrating 'beep'");
+            navigator.vibrate(250);
+        } else if (EnvUtils.isNative()) {
             this.getNativeBeepSound().play();
         } else {
             this.crossPlatformPlay(this.getBeepSound());
         }
 
-        if(navigator.notification){
-           navigator.notification.vibrate(1000);
-        }
     },
     
     doTick: function () {
-        if (EnvUtils.isNative()) {
+        console.log("doTick()");
+        if (navigator.vibrate) {
+            console.log("vibrating 'tick'");
+            navigator.vibrate(20);
+        } else if (EnvUtils.isNative()) {
             this.getNativeTickSound().play();
         } else {
             this.crossPlatformPlay(this.getTickSound());
