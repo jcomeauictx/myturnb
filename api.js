@@ -92,10 +92,6 @@ app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
-app.get('/data/readme.json', function(req, res) {
-    res.sendfile('/Readme.txt', {root: __dirname});
-});
-
 app.configure('production', function(){
   app.use(express.errorHandler());
 });
