@@ -64,10 +64,10 @@ Ext.define('testing.controller.Discussion', {
        console.log("flowdebug: doUsersSaved()");
        this.clearTick();
        this.initMessageScreen();
-       this.doIntro();
     },
 
     doNewSpeaker: function (data) {
+        if (this.getTimeRemainingLabel().getHtml() == "") doIntro();
         this.getMessageLabel().setHtml('Current speaker is ' + data.name);
         this.doUpdateTimeRemaining(data);
         if (this.getUserName() != data.name) {
