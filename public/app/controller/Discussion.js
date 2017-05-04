@@ -67,7 +67,11 @@ Ext.define('testing.controller.Discussion', {
     },
 
     doNewSpeaker: function (data) {
-        if (this.getTimeRemainingLabel().getHtml() == "") doIntro();
+        console.log("flowdebug: doNewSpeaker()");
+        if (this.getTimeRemainingLabel().getHtml() == "") {
+            console.log("first speaker of session, playing intro music");
+            doIntro();
+        }
         this.getMessageLabel().setHtml('Current speaker is ' + data.name);
         this.doUpdateTimeRemaining(data);
         if (this.getUserName() != data.name) {
@@ -223,7 +227,6 @@ Ext.define('testing.controller.Discussion', {
             });
         }
         this.doCordovaLoaded();
-        this.doIntro();
     },
     
     doCordovaLoaded: function() {
