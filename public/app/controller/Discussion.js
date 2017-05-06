@@ -68,10 +68,6 @@ Ext.define('testing.controller.Discussion', {
 
     doNewSpeaker: function (data) {
         console.log("flowdebug: doNewSpeaker()");
-        if (this.getTimeRemainingLabel().getHtml() == "") {
-            console.log("first speaker of session, playing intro music");
-            this.doIntro();
-        }
         this.getMessageLabel().setHtml('Current speaker is ' + data.name);
         this.doUpdateTimeRemaining(data);
         if (this.getUserName() != data.name) {
