@@ -51,13 +51,11 @@ Ext.define('testing.controller.Discussion', {
 
     doDiscussionOver: function (data) {
         console.log("flowdebug: doDiscussionOver()");
-    // 2017-04-10:17:38 only time this fires is if timer runs out with
-    // no speaker active, and the "My Turn" button is clicked.
-    this.clearTick();
+        this.clearTick();
         Ext.Msg.alert('', 'The discussion is over.');
         // a group was deleted on server, time to reload
         Ext.getStore('groups').load();
-    this.getUserReportView().doUsersSaved(data);
+        this.getUserReportView().doUsersSaved(data);
     },
 
     doUsersSaved: function(data) {
