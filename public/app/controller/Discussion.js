@@ -74,6 +74,7 @@ Ext.define('testing.controller.Discussion', {
     },
 
     doWaitingForNewSpeaker: function (data) {
+        console.log("flowdebug: doWaitingForNewSpeaker()");
         this.getMessageLabel().setHtml('Waiting for New Speaker');
         this.doUpdateTimeRemaining(data);
         this.doBeep();
@@ -89,6 +90,7 @@ Ext.define('testing.controller.Discussion', {
     },
 
     initMessageScreen: function () {
+        console.log("flowdebug: initMessageScreen()");
         this.getMessageLabel().setHtml('Waiting for New Speaker');
         this.getTimeRemainingLabel().setHtml('');
     },
@@ -174,6 +176,7 @@ Ext.define('testing.controller.Discussion', {
     },
 
     init: function () {
+        console.log("flowdebug: init()");
         this.getApplication().on({
             discussionOver: this.doDiscussionOver,
             usersSaved: this.doUsersSaved,
@@ -186,6 +189,7 @@ Ext.define('testing.controller.Discussion', {
     },
 
     launch: function () {
+        console.log("flowdebug: launch()");
         var button = this.getAddToQueueButton();
         // temp fix to android context menu on images
         if (EnvUtils.isNative() || !Ext.os.is('Android')) {

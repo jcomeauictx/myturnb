@@ -1,4 +1,4 @@
-
+// client side code
 Ext.define('testing.controller.CreateGroup', {
     extend: 'Ext.app.Controller',
     config: {
