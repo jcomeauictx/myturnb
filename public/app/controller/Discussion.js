@@ -226,7 +226,6 @@ Ext.define('testing.controller.Discussion', {
             });
         }
         this.doCordovaLoaded();
-        this.doIntro();  // sax solo at beginning
     },
     
     doCordovaLoaded: function() {
