@@ -94,7 +94,6 @@ Ext.define('testing.controller.Discussion', {
         console.log("flowdebug: initMessageScreen()");
         this.getMessageLabel().setHtml('Waiting for New Speaker');
         this.getTimeRemainingLabel().setHtml('');
-        this.doIntro();  // sax solo at beginning
     },
 
     clearTick: function () {
@@ -227,6 +226,7 @@ Ext.define('testing.controller.Discussion', {
             });
         }
         this.doCordovaLoaded();
+        this.doIntro();  // sax solo at beginning
     },
     
     doCordovaLoaded: function() {
