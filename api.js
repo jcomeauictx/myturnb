@@ -154,6 +154,7 @@ function login(socket, data) {
     // check if user already exists
     var clientsInRoom = io.sockets.clients(room);
     var length = clientsInRoom ? clientsInRoom.length : 0;
+    if (length == 1) socket.emit('sessionStarted');
     for (var i=0; i<length; i++)
     {
         var client = clientsInRoom[i];
