@@ -176,6 +176,10 @@ Ext.define('testing.controller.Discussion', {
         this.getTimeRemainingLabel().setHtml(formattedTime);
     },
 
+    doInitSession: function() {
+        this.doIntro();
+    },
+
     init: function () {
         console.log("flowdebug: init()");
         this.getApplication().on({
@@ -185,6 +189,7 @@ Ext.define('testing.controller.Discussion', {
             yourTurn: this.doMyTurn,
             waitingForNewSpeaker: this.doWaitingForNewSpeaker,
             cordovaLoaded: this.doCordovaLoaded,
+            initSession: this.doInitSession,
             scope: this
         });
     },
