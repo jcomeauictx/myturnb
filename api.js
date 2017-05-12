@@ -15,7 +15,7 @@ var getLocalNetworkIP = (function () {
     var ignoreRE = /^(127\.0\.0\.1|::1|fe80(:1)?::1(%.*)?)$/i;
 
     var exec = require('child_process').exec;
-    var cached;    
+    var cached;
     var command;
     var filterRE;
 
@@ -154,7 +154,6 @@ function login(socket, data) {
     // check if user already exists
     var clientsInRoom = io.sockets.clients(room);
     var length = clientsInRoom ? clientsInRoom.length : 0;
-    if (length == 1) socket.emit('sessionStarted');
     for (var i=0; i<length; i++)
     {
         var client = clientsInRoom[i];
@@ -181,7 +180,9 @@ function login(socket, data) {
         rulesEngineMap[room] = newRulesEngine;
     }
     socket.join(room);
-    socket.emit('userAccepted');
+    socket.emit("userAccepted");
+    if (length == 0) socket.emit("sessionStarted");
+    else console.log("session was already begun by another user");
 }
 
 function getRoomObject(room) {
@@ -273,3 +274,6 @@ function cleanRoomData(room) {
     // clean up db
     removeRoomObject(room);
 }
+/*
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+*/

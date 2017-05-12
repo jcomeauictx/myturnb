@@ -46,6 +46,7 @@ Ext.define('testing.controller.Socket', {
             application.fireEvent('userLoggedIn');
         });
         this.socket.on('sessionStarted', function() {
+            console.log('firing initSession event');
             application.fireEvent('initSession');
         });
         this.socket.on('message', function(data) {
