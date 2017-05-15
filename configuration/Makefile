@@ -8,7 +8,7 @@ TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
 DRYRUN ?= --dry-run  # for rsync
 DELETE ?= --delete
 export
-env:
+set env:
 	$@
 install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
 siteinstall: | $(SITE_ROOT)
