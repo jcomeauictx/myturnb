@@ -1,4 +1,15 @@
-SERVICE := myturn
+SHELL := /bin/bash
+NODE_ENV := $(shell node -e \
+ 'process.stdout.write(JSON.stringify(process.env))')
+NPM_CONFIG_ARGV := $(shell node -e \
+ 'process.stdout.write(process.env.npm_config_argv)')
+PACKAGE := $(shell node -e \
+ 'process.stdout.write(JSON.parse(process.env.npm_config_argv)["remain"][0])')
+BRANCH := $(findstring $(shell echo ${PACKAGE#*#}), alpha beta baseline)
+ifeq "$(strip $(BRANCH))" ""
+ BRANCH := baseline
+endif
+SERVICE := myturn-$(BRANCH)
 BACKEND := node-$(SERVICE)-api
 NGINX_CONFIG := /etc/nginx
 SITE_ROOT := /var/www/myturn
