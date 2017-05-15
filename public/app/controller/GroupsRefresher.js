@@ -1,4 +1,4 @@
-// client side code
+
 Ext.define('testing.controller.GroupsRefresher', {
     extend: 'Ext.app.Controller',
     config: {

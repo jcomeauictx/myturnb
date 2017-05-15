@@ -26,7 +26,7 @@ Ext.define('testing.controller.Socket', {
         var roomName = values.groupName;
         var url = testing.util.UrlUtils.getBaseUrl();
         if (url == '') {
-            url = null;
+        	url = null;
         }
         this.socket = io.connect(url, { resource: 'api/socket.io', 'force new connection': true });
         this.socket.emit('login', { name: loginName, 'room': roomName });
@@ -35,7 +35,7 @@ Ext.define('testing.controller.Socket', {
             var msg = data.reason == 'alreadyExists' ? 'User already exists' : data.reason == 'groupNotDefined' ? 'Group is not defined' : '';
             Ext.Msg.alert('', msg);
             if (data.reason == 'groupNotDefined') {
-                Ext.getStore('groups').load();
+            	Ext.getStore('groups').load();
             }
             application.fireEvent('userLoggedOut');
         });
@@ -44,10 +44,6 @@ Ext.define('testing.controller.Socket', {
         });
         this.socket.on('userAccepted', function() {
             application.fireEvent('userLoggedIn');
-        });
-        this.socket.on('sessionStarted', function() {
-            console.log('firing initSession event');
-            application.fireEvent('initSession');
         });
         this.socket.on('message', function(data) {
             // TODO this implies a dependency between server message types and client ones
@@ -71,6 +67,3 @@ Ext.define('testing.controller.Socket', {
     }
 
 });
-/*
-# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
-*/

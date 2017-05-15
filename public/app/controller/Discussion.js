@@ -51,22 +51,23 @@ Ext.define('testing.controller.Discussion', {
 
     doDiscussionOver: function (data) {
         console.log("flowdebug: doDiscussionOver()");
-        this.clearTick();
-        this.doIntro();  // sax solo at end
+    // 2017-04-10:17:38 only time this fires is if timer runs out with
+    // no speaker active, and the "My Turn" button is clicked.
+    this.clearTick();
         Ext.Msg.alert('', 'The discussion is over.');
         // a group was deleted on server, time to reload
         Ext.getStore('groups').load();
-        this.getUserReportView().doUsersSaved(data);
+    this.getUserReportView().doUsersSaved(data);
     },
 
     doUsersSaved: function(data) {
        console.log("flowdebug: doUsersSaved()");
        this.clearTick();
        this.initMessageScreen();
+       this.doIntro();
     },
 
     doNewSpeaker: function (data) {
-        console.log("flowdebug: doNewSpeaker()");
         this.getMessageLabel().setHtml('Current speaker is ' + data.name);
         this.doUpdateTimeRemaining(data);
         if (this.getUserName() != data.name) {
@@ -75,7 +76,6 @@ Ext.define('testing.controller.Discussion', {
     },
 
     doWaitingForNewSpeaker: function (data) {
-        console.log("flowdebug: doWaitingForNewSpeaker()");
         this.getMessageLabel().setHtml('Waiting for New Speaker');
         this.doUpdateTimeRemaining(data);
         this.doBeep();
@@ -91,7 +91,6 @@ Ext.define('testing.controller.Discussion', {
     },
 
     initMessageScreen: function () {
-        console.log("flowdebug: initMessageScreen()");
         this.getMessageLabel().setHtml('Waiting for New Speaker');
         this.getTimeRemainingLabel().setHtml('');
     },
@@ -176,13 +175,7 @@ Ext.define('testing.controller.Discussion', {
         this.getTimeRemainingLabel().setHtml(formattedTime);
     },
 
-    doInitSession: function() {
-        console.log("flowdebug: doInitSession()");
-        this.doIntro();
-    },
-
     init: function () {
-        console.log("flowdebug: init()");
         this.getApplication().on({
             discussionOver: this.doDiscussionOver,
             usersSaved: this.doUsersSaved,
@@ -190,13 +183,11 @@ Ext.define('testing.controller.Discussion', {
             yourTurn: this.doMyTurn,
             waitingForNewSpeaker: this.doWaitingForNewSpeaker,
             cordovaLoaded: this.doCordovaLoaded,
-            initSession: this.doInitSession,
             scope: this
         });
     },
 
     launch: function () {
-        console.log("flowdebug: launch()");
         var button = this.getAddToQueueButton();
         // temp fix to android context menu on images
         if (EnvUtils.isNative() || !Ext.os.is('Android')) {
@@ -232,6 +223,7 @@ Ext.define('testing.controller.Discussion', {
             });
         }
         this.doCordovaLoaded();
+        this.doIntro();
     },
     
     doCordovaLoaded: function() {

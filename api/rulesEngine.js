@@ -283,6 +283,3 @@ rulesEngine.prototype.createTimedAction = function(actionFunction, params, noRep
 }
 
 module.exports = rulesEngine;
-/*
-# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
-*/
