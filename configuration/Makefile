@@ -12,7 +12,7 @@ env:
 	$@
 install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
 siteinstall: | $(SITE_ROOT)
-	cd .. && sudo rsync -avcz $(DRYRUN) $(DELETE) \
+	cd .. && rsync -avcz $(DRYRUN) $(DELETE) \
 	 --exclude=configuration --exclude='.git*' \
 	 . $(SITE_ROOT)/
 /etc/init.d/%: %
@@ -21,29 +21,29 @@ siteinstall: | $(SITE_ROOT)
 	  echo $@ unchanged >&2; \
 	 else \
 	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
-	  sudo mv $@ $@.$(TIMESTAMP); \
+	  mv $@ $@.$(TIMESTAMP); \
 	 fi; \
 	fi
-	[ -e "$@" ] || sudo cp $< $@
+	[ -e "$@" ] || cp $< $@
 /etc/rc2.d/S01%: /etc/init.d/%
-	sudo update-rc.d $* defaults
+	update-rc.d $* defaults
 startup_service: /etc/init.d/$(BACKEND)
-	sudo $< restart
+	$< restart
 $(SITE_ROOT):
-	sudo mkdir -p $@
+	mkdir -p $@
 $(SITE_ACTIVE): $(SITE_CONFIG)
-	cd $(dir $@) && sudo ln -sf ../sites-available/$(notdir $<) .
+	cd $(dir $@) && ln -sf ../sites-available/$(notdir $<) .
 $(SITE_CONFIG): myturn.nginx
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \
 	  echo $@ unchanged >&2; \
 	 else \
 	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
-	  sudo mv $@ $@.$(TIMESTAMP); \
+	  mv $@ $@.$(TIMESTAMP); \
 	 fi; \
 	fi
-	[ -e "$@" ] || sudo cp $< $@
+	[ -e "$@" ] || cp $< $@
 restart_nginx: /etc/init.d/nginx
-	sudo $< restart
+	$< restart
 diff:
 	diff -r -x '.git*' .. /var/www/myturn
