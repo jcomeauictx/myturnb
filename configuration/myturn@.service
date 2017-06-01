@@ -1,0 +1,11 @@
+[Unit]
+Description=%p, %i daemon
+After=network.target
+
+[Service]
+Environment=SERVER_PORT=%p-%i
+ExecStart=/usr/bin/logger %p-%i starting
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
