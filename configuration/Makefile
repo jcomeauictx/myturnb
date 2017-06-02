@@ -10,7 +10,7 @@ ifeq "$(strip $(BRANCH))" ""
  BRANCH := baseline
 endif
 SERVICE := myturn-$(BRANCH)
-BACKEND := node-$(SERVICE)-api
+BACKEND := myturn@$(BRANCH)
 NGINX_CONFIG := /etc/nginx
 SITE_ROOT := /var/www/myturn
 SITE_CONFIG := $(NGINX_CONFIG)/sites-available/$(SERVICE)
@@ -21,25 +21,14 @@ DELETE ?= --delete
 export
 set env:
 	$@
-install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
+install: /etc/systemd/system/myturn@.service $(SITE_ACTIVE) \
+ restart_$(BACKEND) restart_nginx
+/etc/systemd/system/%: %
+	cp -f $< $@
 siteinstall: | $(SITE_ROOT)
 	cd .. && rsync -avcz $(DRYRUN) $(DELETE) \
 	 --exclude=configuration --exclude='.git*' \
 	 . $(SITE_ROOT)/
-/etc/init.d/%: %
-	if [ -e "$@" ]; then \
-	 if diff -q $< $@; then \
-	  echo $@ unchanged >&2; \
-	 else \
-	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
-	  mv $@ $@.$(TIMESTAMP); \
-	 fi; \
-	fi
-	[ -e "$@" ] || cp $< $@
-/etc/rc2.d/S01%: /etc/init.d/%
-	update-rc.d $* defaults
-startup_service: /etc/init.d/$(BACKEND)
-	$< restart
 $(SITE_ROOT):
 	mkdir -p $@
 $(SITE_ACTIVE): $(SITE_CONFIG)
@@ -54,7 +43,9 @@ $(SITE_CONFIG): myturn.nginx
 	 fi; \
 	fi
 	[ -e "$@" ] || cp $< $@
-restart_nginx: /etc/init.d/nginx
-	$< restart
+restart_%:
+	-systemctl stop $*
+	systemctl enable $*
+	systemctl start $*
 diff:
 	diff -r -x '.git*' .. /var/www/myturn
