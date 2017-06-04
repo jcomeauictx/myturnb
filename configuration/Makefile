@@ -20,7 +20,7 @@ RELEASE_PORT := 3001
 LEGACY_PORT := 3000
 SERVER_PORT := $($(shell echo $(BRANCH) | tr a-z A-Z)_PORT)
 NGINX_CONFIG := /etc/nginx
-SITE_ROOT := /var/www/myturn
+SITE_ROOT := /var/www/$(SERVICE)
 SITE_CONFIG := $(NGINX_CONFIG)/sites-available/$(SERVICE)
 SITE_ACTIVE := $(NGINX_CONFIG)/sites-enabled/$(SERVICE)
 TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
@@ -46,7 +46,10 @@ $(SITE_ACTIVE): $(SITE_CONFIG)
 	cd $(dir $@) && ln -sf ../sites-available/$(notdir $<) .
 /tmp/$(SERVICE).nginx: myturn.nginx .FORCE
 	cp -f $< $@
-	sed -i "s/$(LEGACY_PORT)/$(SERVER_PORT)/" $@
+	sed -i -e "s/$(LEGACY_PORT)/$(SERVER_PORT)/" \
+	 -e "s/legacy/$(BRANCH)/g" \
+	 $@
+	[ "$(BRANCH)" != "production" ] && sed -i 's/ myturn.mobi//' $@
 $(SITE_CONFIG): /tmp/$(SERVICE).nginx
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \
@@ -62,5 +65,5 @@ restart_%:
 	systemctl enable $*
 	systemctl start $*
 diff:
-	diff -r -x '.git*' .. /var/www/myturn
+	diff -r -x '.git*' .. /var/www/$(SERVICE)
 .FORCE:

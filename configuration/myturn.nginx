@@ -5,8 +5,8 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server ipv6only=on;
 
-    server_name myturn.mobi *.myturn.old;
-    root        /var/www/myturn/public;
+    server_name myturn.mobi legacy.myturn.mobi legacy.*.myturn.old;
+    root        /var/www/myturn-legacy/public;
     index       index.html;
 
     access_log  /var/log/nginx/myturn-access.log;
