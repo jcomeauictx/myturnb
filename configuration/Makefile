@@ -5,8 +5,10 @@ NPM_CONFIG_ARGV := $(shell node -e \
  'process.stdout.write(process.env.npm_config_argv)')
 PACKAGE := $(shell node -e \
  'process.stdout.write(JSON.parse(process.env.npm_config_argv)["remain"][0])')
-BRANCH := $(findstring $(shell echo ${PACKAGE#*#}), alpha beta baseline)
-ifeq "$(strip $(BRANCH))" ""
+BRANCH := $(shell echo $(PACKAGE) | cut -d\# -f2)
+# we're only interested in specially named branches, to determine port number
+BRANCH := $(findstring $(BRANCH), alpha beta baseline)
+ifeq ($(strip $(BRANCH)),)
  BRANCH := release
 endif
 SERVICE := myturn-$(BRANCH)
