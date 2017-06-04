@@ -16,8 +16,8 @@ BACKEND := myturn@$(BRANCH)
 ALPHA_PORT := 3004
 BETA_PORT := 3003
 BASELINE_PORT := 3002
-# eventually release will be 3001 but current release code uses 3000
-RELEASE_PORT := 3000
+RELEASE_PORT := 3001
+LEGACY_PORT := 3000
 SERVER_PORT := $($(shell echo $(BRANCH) | tr a-z A-Z)_PORT)
 NGINX_CONFIG := /etc/nginx
 SITE_ROOT := /var/www/myturn
@@ -29,10 +29,13 @@ DELETE ?= --delete
 export
 set env:
 	$@
-install: /etc/systemd/system/myturn@.service $(SITE_ACTIVE) \
+install: /etc/systemd/system/myturn@$(BRANCH).service $(SITE_ACTIVE) \
  restart_$(BACKEND) restart_nginx
-/etc/systemd/system/%: %
+/etc/systemd/system/%: /tmp/%
+	mv -f $< $@
+/tmp/myturn@%.service: myturn@.service .FORCE
 	cp -f $< $@
+	sed -i "s/$(LEGACY_PORT)/$(SERVER_PORT)/" $@
 siteinstall: | $(SITE_ROOT)
 	cd .. && rsync -avcz $(DRYRUN) $(DELETE) \
 	 --exclude=configuration --exclude='.git*' \
@@ -41,7 +44,10 @@ $(SITE_ROOT):
 	mkdir -p $@
 $(SITE_ACTIVE): $(SITE_CONFIG)
 	cd $(dir $@) && ln -sf ../sites-available/$(notdir $<) .
-$(SITE_CONFIG): myturn.nginx
+/tmp/$(SERVICE).nginx: myturn.nginx .FORCE
+	cp -f $< $@
+	sed -i "s/$(LEGACY_PORT)/$(SERVER_PORT)/" $@
+$(SITE_CONFIG): /tmp/$(SERVICE).nginx
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \
 	  echo $@ unchanged >&2; \
@@ -50,10 +56,11 @@ $(SITE_CONFIG): myturn.nginx
 	  mv $@ $@.$(TIMESTAMP); \
 	 fi; \
 	fi
-	[ -e "$@" ] || cp $< $@
+	[ -e "$@" ] || mv $< $@
 restart_%:
 	-systemctl stop $*
 	systemctl enable $*
 	systemctl start $*
 diff:
 	diff -r -x '.git*' .. /var/www/myturn
+.FORCE:

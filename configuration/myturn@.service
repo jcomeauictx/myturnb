@@ -3,7 +3,7 @@ Description=%p, %i daemon
 After=network.target
 
 [Service]
-Environment=SERVER_PORT=%p-%i
+Environment=SERVER_PORT=3000
 ExecStart=/usr/bin/logger %p-%i starting
 Restart=on-failure
 

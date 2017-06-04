@@ -5,10 +5,7 @@ Ext.define('testing.util.UrlUtils', {
 	 * I haven't broken some needed functionality -- jc@unternet.net */
 	singleton: true,
 	getBaseUrl: function() {
-		var url = "http://localhost:3000/";
-		var isNative = EnvUtils.isNative();
-		var baseUrl = location.href.substring(0, location.href.lastIndexOf("/") + 1);
-		if (isNative || (baseUrl != "http://localhost/")) url = baseUrl;
-		return url;
+		return (location.origin ||
+			location.protocol + "//" + location.host) + "/";
 	}
 });

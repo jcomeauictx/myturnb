@@ -103,7 +103,7 @@ app.configure('production', function(){
 var port = 80;
 
 if(process.argv.indexOf('--local') != -1){
-    port = 3000;
+    port = process.env.SERVER_PORT;
 }
 
 /*getLocalNetworkIP(function(error, address){
