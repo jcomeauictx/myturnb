@@ -7,10 +7,16 @@ PACKAGE := $(shell node -e \
  'process.stdout.write(JSON.parse(process.env.npm_config_argv)["remain"][0])')
 BRANCH := $(findstring $(shell echo ${PACKAGE#*#}), alpha beta baseline)
 ifeq "$(strip $(BRANCH))" ""
- BRANCH := baseline
+ BRANCH := release
 endif
 SERVICE := myturn-$(BRANCH)
 BACKEND := myturn@$(BRANCH)
+ALPHA_PORT := 3004
+BETA_PORT := 3003
+BASELINE_PORT := 3002
+# eventually release will be 3001 but current release code uses 3000
+RELEASE_PORT := 3000
+SERVER_PORT := $($(shell echo $(BRANCH) | tr a-z A-Z)_PORT)
 NGINX_CONFIG := /etc/nginx
 SITE_ROOT := /var/www/myturn
 SITE_CONFIG := $(NGINX_CONFIG)/sites-available/$(SERVICE)
