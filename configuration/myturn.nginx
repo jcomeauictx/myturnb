@@ -3,7 +3,7 @@ server {
     client_max_body_size 128M;
 
     listen 80;
-    listen [::]:80 ipv6only=on;
+    listen [::]:80;
 
     server_name legacy.myturn.mobi *.legacy.myturn.mobi *.legacy.myturn.old;
     root        /var/www/myturn-legacy/public;

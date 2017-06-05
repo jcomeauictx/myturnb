@@ -49,11 +49,9 @@ $(SITE_ACTIVE): $(SITE_CONFIG)
 	sed -i -e "s/$(LEGACY_PORT)/$(SERVER_PORT)/" \
 	 -e "s/legacy/$(BRANCH)/g" \
 	 $@
-	# "production" branch replaces legacy installation for "myturn.mobi"
-	if [ "$(BRANCH)" = "production" ]; then \
-	 sed -i 's/production[.]//' $@; \
-	 rm -f /etc/nginx/sites-enabled/myturn; \
-	fi
+	# must leave /etc/nginx/sites-enabled/myturn for listen options
+	# FIXME: on new servers it won't be there, we'll need to specify
+	# the default_server and ipv6only=on options
 $(SITE_CONFIG): /tmp/$(SERVICE).nginx
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \
