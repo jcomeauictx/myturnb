@@ -3,8 +3,9 @@ Description=%p, %i daemon
 After=network.target
 
 [Service]
+WorkingDirectory=/var/www/%p-%i
 Environment=SERVER_PORT=3000
-ExecStart=/usr/bin/logger %p-%i starting
+ExecStart=/usr/bin/logger %p-%i starting; node api.js
 Restart=on-failure
 
 [Install]
