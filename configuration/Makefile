@@ -62,6 +62,7 @@ $(SITE_CONFIG): /tmp/$(SERVICE).nginx
 	[ -e "$@" ] || mv $< $@
 restart_%:
 	-systemctl stop $*
+	systemctl daemon-reload  # in case configuration changed
 	systemctl enable $*
 	systemctl start $*
 diff:
