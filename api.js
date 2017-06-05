@@ -103,7 +103,8 @@ app.configure('production', function(){
 var port = 80;
 
 if(process.argv.indexOf('--local') != -1){
-    port = process.env.SERVER_PORT;
+    console.log("setting server port to " + process.env.SERVER_PORT);
+    port = parseInt(process.env.SERVER_PORT);
 }
 
 /*getLocalNetworkIP(function(error, address){
@@ -117,9 +118,12 @@ if(process.argv.indexOf('--local') != -1){
     }
 });*/
 
+if (!(port == 80 || port >= 3000 || port <= 3004)) {
+    console.error("Bad port number " + port + "! Environment: " +
+        JSON.stringify(process.env));
+}
 app.listen(port);
 console.log("MyTurn API started on port " + app.address().port);
-
 
 var io = require('socket.io').listen(app);
 io.configure(function() {

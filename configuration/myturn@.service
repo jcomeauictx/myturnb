@@ -1,11 +1,12 @@
 [Unit]
 Description=%p, %i daemon
 After=network.target
+SyslogIdentifier=%p-%i
 
 [Service]
 WorkingDirectory=/var/www/%p-%i
 Environment=SERVER_PORT=3000
-ExecStart=/usr/bin/logger %p-%i starting; node api.js
+ExecStart=/usr/bin/logger %p-%i starting; node api.js --local
 Restart=on-failure
 
 [Install]
