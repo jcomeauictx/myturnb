@@ -52,7 +52,7 @@ $(SITE_ACTIVE): $(SITE_CONFIG)
 	# must leave /etc/nginx/sites-enabled/myturn for listen options
 	# FIXME: on new servers it won't be there, we'll need to specify
 	# the default_server and ipv6only=on options
-$(SITE_CONFIG): /tmp/$(SERVICE).nginx
+$(SITE_CONFIG): /tmp/$(SERVICE).nginx .FORCE
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \
 	  echo $@ unchanged >&2; \
