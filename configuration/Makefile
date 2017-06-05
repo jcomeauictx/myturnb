@@ -49,7 +49,11 @@ $(SITE_ACTIVE): $(SITE_CONFIG)
 	sed -i -e "s/$(LEGACY_PORT)/$(SERVER_PORT)/" \
 	 -e "s/legacy/$(BRANCH)/g" \
 	 $@
-	[ "$(BRANCH)" != "production" ] && sed -i 's/ myturn.mobi//' $@
+	# "production" branch replaces legacy installation for "myturn.mobi"
+	if [ "$(BRANCH)" = "production" ]; then \
+	 sed -i 's/production[.]//' $@; \
+	 rm -f /etc/nginx/sites-enabled/myturn; \
+	fi
 $(SITE_CONFIG): /tmp/$(SERVICE).nginx
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \

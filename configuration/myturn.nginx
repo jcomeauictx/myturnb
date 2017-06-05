@@ -5,7 +5,7 @@ server {
     listen 80;
     listen [::]:80 ipv6only=on;
 
-    server_name myturn.mobi legacy.myturn.mobi legacy.*.myturn.old;
+    server_name legacy.myturn.mobi *.legacy.myturn.mobi *.legacy.myturn.old;
     root        /var/www/myturn-legacy/public;
     index       index.html;
 
