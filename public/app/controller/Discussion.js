@@ -28,6 +28,7 @@ Ext.define('testing.controller.Discussion', {
         nativeTickSound: null,
         nativeBeepSound: null,
         nativeIntroSound: null,
+        waitingToSpeak: false,
         refs: {
             mainView: "mainView",
             discussionView: "discussionView",
@@ -43,10 +44,12 @@ Ext.define('testing.controller.Discussion', {
 
     doAddToQueue: function () {
         this.getApplication().fireEvent('clientMessage', { type: 'requestToSpeak' });
+        this.waitingToSpeak = true;
     },
 
     doRemoveFromQueue: function () {
         this.getApplication().fireEvent('clientMessage', { type: 'relinquishTurn' });
+        this.waitingToSpeak = false;
     },
 
     doDiscussionOver: function (data) {
@@ -60,9 +63,11 @@ Ext.define('testing.controller.Discussion', {
     },
 
     doUsersSaved: function(data) {
-       console.log("flowdebug: doUsersSaved()");
-       this.clearTick();
-       this.initMessageScreen();
+        console.log("flowdebug: doUsersSaved()");
+        this.clearTick();
+        this.initMessageScreen();
+        this.doIntro();  // sax solo at end
+        // UserReport.js also listens for `userSaved` and launches report page
     },
 
     doNewSpeaker: function (data) {
@@ -181,6 +186,20 @@ Ext.define('testing.controller.Discussion', {
         this.doIntro();
     },
 
+    doHeartbeat: function(data) {
+        /* heartbeat every two seconds if nobody is speaking,
+         * every second if waiting to speak,
+         * ignored if speaking (thus getting tick)
+         */
+        if (this.tickSoundInterval) { 
+            return;
+        } else if (!this.waitingToSpeak) {
+            navigator.vibrate([25, 25]);
+        } else if (data.count & 1) {
+            navigator.vibrate([25, 25]);
+        }
+    },
+
     init: function () {
         console.log("flowdebug: init()");
         this.getApplication().on({
@@ -191,6 +210,7 @@ Ext.define('testing.controller.Discussion', {
             waitingForNewSpeaker: this.doWaitingForNewSpeaker,
             cordovaLoaded: this.doCordovaLoaded,
             initSession: this.doInitSession,
+            heartbeat: this.doHeartbeat,
             scope: this
         });
     },
