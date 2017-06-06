@@ -12,6 +12,7 @@ function rulesEngine(room, messageDispatcher) {
     this.speakerQueue = [];
     this.messageDispatcher = messageDispatcher;
     this.discussionBeginning = null;
+    this.heartbeatTimer = null;
     this.discussionOverActionId = null;
     this.nextTimedActionId = null;
     this.nextTimedActionTime = null;
@@ -115,9 +116,17 @@ rulesEngine.prototype.reprocess = function() {
     var nextSpeakerAction = this.getNextSpeaker();
     // enforce discussion length if it hasn't been done already
     var context = this;
+    var count = 0;
     if(nextSpeakerAction && !this.discussionOverActionId) {
         this.log("flowdebug: discussion beginning");
         this.discussionBeginning = now;
+        this.heartbeatTimer = setInterval(function() {
+            this.messageDispatcher.sendMessageToRoom(this.room, {
+                messageType: 'heartbeat',
+                count: count
+            });
+            count++;
+        }, 1000);
         this.discussionOverActionId = setTimeout(function() {
             context.doPersistUsers.call(context);
         },
@@ -212,6 +221,7 @@ rulesEngine.prototype.doEndingDiscussion = function() {
     this.messageDispatcher.sendMessageToRoom(this.room, {
         messageType: 'discussionOver'
     });
+    this.heartbeatTimer = clearInterval(this.heartbeatTimer);
     this.discussionEnding = false;
 }
 

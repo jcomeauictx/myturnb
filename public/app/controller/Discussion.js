@@ -194,9 +194,9 @@ Ext.define('testing.controller.Discussion', {
         if (this.tickSoundInterval) { 
             return;
         } else if (!this.waitingToSpeak) {
-            navigator.vibrate([25, 25]);
+            navigator.vibrate([25, 3, 25]);
         } else if (data.count & 1) {
-            navigator.vibrate([25, 25]);
+            navigator.vibrate([25, 3, 25]);
         }
     },
 
