@@ -40,6 +40,7 @@ Ext.define('testing.controller.UserReport', {
     },
 
     clearMessageBox: function() {
+        console.log("flowdebug: UserReport.clearMessageBox()");
         if(this.messageBox) {
             this.messageBox.hide();
             this.messageBox.setModal(false);
