@@ -121,6 +121,7 @@ rulesEngine.prototype.reprocess = function() {
         this.log("flowdebug: discussion beginning");
         this.discussionBeginning = now;
         this.heartbeatTimer = setInterval(function() {
+            console.log("sending heartbeat to room at count " + count);
             this.messageDispatcher.sendMessageToRoom(this.room, {
                 messageType: 'heartbeat',
                 count: count

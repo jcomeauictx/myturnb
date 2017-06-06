@@ -191,9 +191,10 @@ Ext.define('testing.controller.Discussion', {
          * every second if waiting to speak,
          * ignored if speaking (thus getting tick)
          */
+        console.log("received heartbeat at count " + data.count);
         if (this.tickSoundInterval) { 
             return;
-        } else if (!this.waitingToSpeak) {
+        } else if (this.waitingToSpeak) {
             navigator.vibrate([25, 3, 25]);
         } else if (data.count & 1) {
             navigator.vibrate([25, 3, 25]);
