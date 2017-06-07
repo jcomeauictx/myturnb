@@ -5,12 +5,14 @@ navigator.vibrate = navigator.vibrate ||
     navigator.webkitVibrate || 
     navigator.mozVibrate || 
     navigator.msVibrate ||
-    (navigator.notification ? navigator.notification.vibrate : undefined);
+    (navigator.notification ? navigator.notification.vibrate : function() {
+        return false
+    });
 // but get rid of false desktop Chrome support -- it can't really vibrate
 if (!navigator.userAgent.match(/(Mobi|SCH-I800)/)) {
     console.log("desktop browser " + navigator.userAgent +
                 ": disabling vibration");
-    navigator.vibrate = undefined;
+    navigator.vibrate = function() {return false};
 }
 console.log("vibration enabled: " + navigator.vibrate);
 
@@ -143,9 +145,8 @@ Ext.define('testing.controller.Discussion', {
     
     doBeep: function() {
         console.log("doBeep()");
-        if (navigator.vibrate) {
-            console.log("vibrating 'beep'");
-            navigator.vibrate(250);
+        if (navigator.vibrate(250)) {
+            console.log("vibrated 'beep'");
         } else if (EnvUtils.isNative()) {
             this.getNativeBeepSound().play();
         } else {
@@ -156,9 +157,8 @@ Ext.define('testing.controller.Discussion', {
     
     doTick: function () {
         console.log("doTick()");
-        if (navigator.vibrate) {
-            console.log("vibrating 'tick'");
-            navigator.vibrate(20);
+        if (navigator.vibrate(20)) {
+            console.log("vibrated 'tick'");
         } else if (EnvUtils.isNative()) {
             this.getNativeTickSound().play();
         } else {
