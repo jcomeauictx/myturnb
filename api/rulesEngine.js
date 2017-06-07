@@ -122,7 +122,7 @@ rulesEngine.prototype.reprocess = function() {
         this.discussionBeginning = now;
         this.heartbeatTimer = setInterval(function() {
             console.log("sending heartbeat to room at count " + count);
-            this.messageDispatcher.sendMessageToRoom(this.room, {
+            context.messageDispatcher.sendMessageToRoom(context.room, {
                 messageType: 'heartbeat',
                 count: count
             });
