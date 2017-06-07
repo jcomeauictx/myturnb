@@ -57,7 +57,6 @@ Ext.define('testing.controller.Discussion', {
     doDiscussionOver: function (data) {
         console.log("flowdebug: doDiscussionOver()");
         this.clearTick();
-        this.doIntro();  // sax solo at end
         Ext.Msg.alert('', 'The discussion is over.');
         // a group was deleted on server, time to reload
         Ext.getStore('groups').load();
