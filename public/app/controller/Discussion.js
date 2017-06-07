@@ -189,15 +189,16 @@ Ext.define('testing.controller.Discussion', {
     doHeartbeat: function(data) {
         /* heartbeat every two seconds if nobody is speaking,
          * every second if waiting to speak,
-         * ignored if speaking (thus getting tick)
+         * ignored if speaking (thus already getting tick)
          */
-        console.log("received heartbeat at count " + data.count);
+        console.log("received heartbeat request at count " + data.count);
+        var beat = [30, 20, 30];
         if (this.tickSoundInterval) { 
             return;
         } else if (this.waitingToSpeak) {
-            navigator.vibrate([25, 3, 25]);
+            navigator.vibrate(beat);
         } else if (data.count & 1) {
-            navigator.vibrate([25, 3, 25]);
+            navigator.vibrate(beat);
         }
     },
 

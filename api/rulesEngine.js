@@ -222,7 +222,6 @@ rulesEngine.prototype.doEndingDiscussion = function() {
     this.messageDispatcher.sendMessageToRoom(this.room, {
         messageType: 'discussionOver'
     });
-    this.heartbeatTimer = clearInterval(this.heartbeatTimer);
     this.discussionEnding = false;
 }
 
@@ -237,6 +236,7 @@ rulesEngine.prototype.doWaitingForSpeaker = function() {
 rulesEngine.prototype.doPersistUsers = function() {
     // discussion is over, make sure no further actions are performed
     this.log("flowdebug: doPersistUsers()");
+    this.heartbeatTimer = clearInterval(this.heartbeatTimer);
     clearTimeout(this.nextTimedActionId);
     clearTimeout(this.discussionOverActionId);
     this.updateActiveSpeaker(new Date().getTime());
