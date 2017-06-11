@@ -190,7 +190,7 @@ Ext.define('testing.controller.Discussion', {
          * ignored if speaking (thus already getting tick)
          */
         console.log("received heartbeat request at count " + data.count);
-        var beat = [30, 20, 30];
+        var beat = [10, 20, 10];
         if (this.tickSoundInterval) { 
             return;
         } else if (this.waitingToSpeak) {
