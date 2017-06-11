@@ -115,9 +115,10 @@ Ext.define('testing.controller.Discussion', {
         this.doBeep();
         var context = this;
         this.clearTick();
+        var count = 0;
         this.tickSoundInterval = setInterval(function () {
-            context.doTick();
-        }, 1000);
+            context.doTick({count: count++});
+        }, 500);
     },
     
     crossPlatformPlay: function(soundObject) {
@@ -153,13 +154,17 @@ Ext.define('testing.controller.Discussion', {
 
     },
     
-    doTick: function () {
+    doTick: function (data) {
         console.log("doTick()");
+        /* if vibration supported, vibrate every half second to distinguish
+         * from "heartbeat" every second while waiting to speak
+         */
+        console.log("doTick() called with data " + data);
         if (navigator.vibrate(20)) {
             console.log("vibrated 'tick'");
-        } else if (EnvUtils.isNative()) {
+        } else if (EnvUtils.isNative() && data.count & 1) {
             this.getNativeTickSound().play();
-        } else {
+        } else if (data.count & 1) {
             this.crossPlatformPlay(this.getTickSound());
         }
     },
