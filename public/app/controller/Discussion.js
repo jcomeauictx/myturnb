@@ -162,7 +162,7 @@ Ext.define('testing.controller.Discussion', {
          * desktop "tick" sound is still every second
          */
         console.log("doTick() called with count " + data.count);
-        if (navigator.vibrate(20)) {
+        if (navigator.vibrate([30, 100, 30])) {
             console.log("vibrated 'tick'");
         } else if (data.count & 1) {
             if (EnvUtils.isNative()) {
