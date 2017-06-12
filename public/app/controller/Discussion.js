@@ -158,14 +158,18 @@ Ext.define('testing.controller.Discussion', {
         console.log("doTick()");
         /* if vibration supported, vibrate every half second to distinguish
          * from "heartbeat" every second while waiting to speak
+         *
+         * desktop "tick" sound is still every second
          */
-        console.log("doTick() called with data " + data);
+        console.log("doTick() called with count " + data.count);
         if (navigator.vibrate(20)) {
             console.log("vibrated 'tick'");
-        } else if (EnvUtils.isNative() && data.count & 1) {
-            this.getNativeTickSound().play();
         } else if (data.count & 1) {
-            this.crossPlatformPlay(this.getTickSound());
+            if (EnvUtils.isNative()) {
+                this.getNativeTickSound().play();
+            } else {
+                this.crossPlatformPlay(this.getTickSound());
+            }
         }
     },
 
@@ -195,7 +199,7 @@ Ext.define('testing.controller.Discussion', {
          * ignored if speaking (thus already getting tick)
          */
         console.log("received heartbeat request at count " + data.count);
-        var beat = [10, 70, 10];
+        var beat = [30, 100, 30];
         if (this.tickSoundInterval) { 
             return;
         } else if (this.waitingToSpeak) {
