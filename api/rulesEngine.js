@@ -119,6 +119,7 @@ rulesEngine.prototype.reprocess = function(force) {
     // enforce discussion length if it hasn't been done already
     var context = this;
     var count = 0;
+    this.log("force discussion start: " + force);
     if (force || (nextSpeakerAction && !this.discussionOverActionId)) {
         /* timer starts automatically after intro (sax solo) plays, but
          * for legacy purposes could also start if an impatient speaker
