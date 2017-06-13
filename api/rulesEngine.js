@@ -125,7 +125,11 @@ rulesEngine.prototype.reprocess = function(force) {
          * pushes "My Turn" before it completes. whichever happens first
          * initializes the discussion; the following action is ignored
          */
-        if (this.discussionBeginning) return;  // already begun
+        if (this.discussionBeginning) {  // already begun
+            this.log("flowdebug: discussion already started at " +
+                     this.discussionBeginning);
+            return;
+        }
         this.log("flowdebug: discussion beginning");
         this.discussionBeginning = now;
         this.heartbeatTimer = setInterval(function() {
