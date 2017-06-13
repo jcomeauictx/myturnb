@@ -191,7 +191,8 @@ Ext.define('testing.controller.Discussion', {
     doInitSession: function() {
         console.log("flowdebug: doInitSession()");
         this.doIntro();
-        this.getApplication().fireEvent('clientMessage', {type: 'beginSession'});
+        this.getApplication().fireEvent('clientMessage', 
+                                        {type: 'beginDiscussion'});
     },
 
     doHeartbeat: function(data) {
