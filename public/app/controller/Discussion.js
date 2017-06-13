@@ -83,7 +83,8 @@ Ext.define('testing.controller.Discussion', {
         console.log("flowdebug: doWaitingForNewSpeaker()");
         this.getMessageLabel().setHtml('Waiting for New Speaker');
         this.doUpdateTimeRemaining(data);
-        this.doBeep();
+        // no beep if discussion started automatically, no speaker request
+        if (data.lastSpeaker) this.doBeep();
         this.clearTick();
     },
 

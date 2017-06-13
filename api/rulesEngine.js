@@ -17,6 +17,7 @@ function rulesEngine(room, messageDispatcher) {
     this.nextTimedActionId = null;
     this.nextTimedActionTime = null;
     this.activeSpeaker = null;
+    this.lastSpeaker = null;
     this.discussionRepeating = false;
     this.discussionEnding = false;
     this.callback = null;
@@ -91,6 +92,7 @@ rulesEngine.prototype.doRepeatDiscussion = function(user, data) {
     this.nextTimedActionId = null;
     this.nextTimedActionTime = null;
     this.activeSpeaker = null;
+    this.lastSpeaker = null;
     this.discussionRepeating = true;
     return true;
 }
@@ -99,9 +101,10 @@ rulesEngine.prototype.doRelinquishTurn = function(user, data) {
     // interrupt user if speaking
     if(this.activeSpeaker && (user.name == this.activeSpeaker.name)) {
         this.updateActiveSpeaker(new Date().getTime());
+        this.lastSpeaker = this.activeSpeaker;
         this.activeSpeaker = null;
     }
-    // remove use user from queue
+    // remove user from queue
     var length = this.speakerQueue.length;
     for(var i = 0; i < length; i++) {
         var currentUser = this.speakerQueue[i];
@@ -243,6 +246,7 @@ rulesEngine.prototype.doWaitingForSpeaker = function() {
     var now = new Date().getTime();
     this.messageDispatcher.sendMessageToRoom(this.room, {
         messageType: 'waitingForNewSpeaker',
+        lastSpeaker: this.lastSpeaker,
         timeLeft: this.getTimeLeft(now)
     });
 }
