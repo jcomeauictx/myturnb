@@ -45,17 +45,19 @@ rulesEngine.prototype.receiveClientMessage = function(user, data) {
     this.log("flowdebug: RulesEngine received client " +
 		 user.name + " message " + type);
     var shouldReprocess = false;
-    if(type == 'requestToSpeak') {
+    if (type == 'beginDiscussion') {
+        this.reprocess(true);  // force reprocess
+    } else if (type == 'requestToSpeak') {
         shouldReprocess = this.doRequestToSpeak(user, data);
-    } else if(type == 'relinquishTurn') {
+    } else if (type == 'relinquishTurn') {
         shouldReprocess = this.doRelinquishTurn(user, data);
-    } else if(type == 'repeatDiscussion') {
+    } else if (type == 'repeatDiscussion') {
         shouldReprocess = this.doRepeatDiscussion(user, data);
-    } else if(type == 'discussionOver') {
+    } else if (type == 'discussionOver') {
         shouldReprocess = this.doDiscussionOver(user, data);
     }
     if(shouldReprocess) {
-        this.reprocess();
+        this.reprocess(null);
     }
 }
 
@@ -110,14 +112,20 @@ rulesEngine.prototype.doRelinquishTurn = function(user, data) {
     }
 }
 
-rulesEngine.prototype.reprocess = function() {
+rulesEngine.prototype.reprocess = function(force) {
     var now = new Date().getTime();
     // get possible message events and set the closest as a timeout
     var nextSpeakerAction = this.getNextSpeaker();
     // enforce discussion length if it hasn't been done already
     var context = this;
     var count = 0;
-    if(nextSpeakerAction && !this.discussionOverActionId) {
+    if (force || (nextSpeakerAction && !this.discussionOverActionId)) {
+        /* timer starts automatically after intro (sax solo) plays, but
+         * for legacy purposes could also start if an impatient speaker
+         * pushes "My Turn" before it completes. whichever happens first
+         * initializes the discussion; the following action is ignored
+         */
+        if (this.discussionBeginning) return;  // already begun
         this.log("flowdebug: discussion beginning");
         this.discussionBeginning = now;
         this.heartbeatTimer = setInterval(function() {
@@ -128,10 +136,11 @@ rulesEngine.prototype.reprocess = function() {
             });
             count++;
         }, 1000);
-        this.discussionOverActionId = setTimeout(function() {
-            context.doPersistUsers.call(context);
-        },
-        this.discussionLength);
+        this.discussionOverActionId = setTimeout(
+            function() {
+                context.doPersistUsers.call(context);
+            },
+            this.discussionLength);
     }
     // check for phantom groups (e.g. time was over but no user responded to repeat/terminate dialog)
     var cleanupNecessary = this.isInconsistent();
@@ -246,7 +255,7 @@ rulesEngine.prototype.doPersistUsers = function() {
     this.messageDispatcher.emit('persistRoomData', this.room);
     // schedule cleanup in 10 minutes in case persist doesn't yield repeat or over messages
     var context = this;
-    setTimeout(function(){context.reprocess()}, 10*60*1000);
+    setTimeout(function(){context.reprocess(null)}, 10*60*1000);
 }
 
 rulesEngine.prototype.updateActiveSpeaker = function(currentTime) {
@@ -287,7 +296,7 @@ rulesEngine.prototype.createTimedAction = function(actionFunction, params, noRep
         context.nextTimedActionId = null;
         context.nextTimedActionTime = null;
         if (!noReprocess) {
-            context.reprocess();         
+            context.reprocess(null);
         }
     });
     return nextAction;
