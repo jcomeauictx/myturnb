@@ -15,7 +15,7 @@ var getLocalNetworkIP = (function () {
     var ignoreRE = /^(127\.0\.0\.1|::1|fe80(:1)?::1(%.*)?)$/i;
 
     var exec = require('child_process').exec;
-    var cached;    
+    var cached;
     var command;
     var filterRE;
 
@@ -103,7 +103,8 @@ app.configure('production', function(){
 var port = 80;
 
 if(process.argv.indexOf('--local') != -1){
-    port = 3000;
+    console.log("setting server port to " + process.env.SERVER_PORT);
+    port = parseInt(process.env.SERVER_PORT);
 }
 
 /*getLocalNetworkIP(function(error, address){
@@ -117,9 +118,12 @@ if(process.argv.indexOf('--local') != -1){
     }
 });*/
 
+if (!(port == 80 || port >= 3000 || port <= 3004)) {
+    console.error("Bad port number " + port + "! Environment: " +
+        JSON.stringify(process.env));
+}
 app.listen(port);
 console.log("MyTurn API started on port " + app.address().port);
-
 
 var io = require('socket.io').listen(app);
 io.configure(function() {
@@ -180,7 +184,9 @@ function login(socket, data) {
         rulesEngineMap[room] = newRulesEngine;
     }
     socket.join(room);
-    socket.emit('userAccepted');
+    socket.emit("userAccepted");
+    if (length == 0) socket.emit("sessionStarted");
+    else console.log("session was already begun by another user");
 }
 
 function getRoomObject(room) {
@@ -272,3 +278,6 @@ function cleanRoomData(room) {
     // clean up db
     removeRoomObject(room);
 }
+/*
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+*/

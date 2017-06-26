@@ -2,11 +2,11 @@ server {
     charset utf-8;
     client_max_body_size 128M;
 
-    listen 80 default_server;
-    listen [::]:80 default_server ipv6only=on;
+    listen 80;
+    listen [::]:80;
 
-    server_name myturn.mobi *.myturn.old;
-    root        /var/www/myturn/public;
+    server_name legacy.myturn.mobi *.legacy.myturn.mobi *.legacy.myturn.old;
+    root        /var/www/myturn-legacy/public;
     index       index.html;
 
     access_log  /var/log/nginx/myturn-access.log;

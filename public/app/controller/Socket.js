@@ -45,6 +45,10 @@ Ext.define('testing.controller.Socket', {
         this.socket.on('userAccepted', function() {
             application.fireEvent('userLoggedIn');
         });
+	this.socket.on('sessionStarted', function() {
+	    console.log('firing initSession event');
+	    application.fireEvent('initSession');
+	});
         this.socket.on('message', function(data) {
             // TODO this implies a dependency between server message types and client ones
             application.fireEvent(data.messageType, data);
@@ -67,3 +71,6 @@ Ext.define('testing.controller.Socket', {
     }
 
 });
+/*
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+*/

@@ -1,47 +1,72 @@
-SERVICE := myturn
-BACKEND := node-$(SERVICE)-api
+SHELL := /bin/bash
+NODE_ENV := $(shell node -e \
+ 'process.stdout.write(JSON.stringify(process.env))')
+NPM_CONFIG_ARGV := $(shell node -e \
+ 'process.stdout.write(process.env.npm_config_argv)')
+PACKAGE := $(shell node -e \
+ 'process.stdout.write(JSON.parse(process.env.npm_config_argv)["remain"][0])')
+BRANCH := $(shell echo $(PACKAGE) | cut -d\# -f2)
+# we're only interested in specially named branches, to determine port number
+BRANCH := $(findstring $(BRANCH), alpha beta baseline)
+ifeq ($(strip $(BRANCH)),)
+ BRANCH := release
+endif
+SERVICE := myturn-$(BRANCH)
+BACKEND := myturn@$(BRANCH)
+ALPHA_PORT := 3004
+BETA_PORT := 3003
+BASELINE_PORT := 3002
+RELEASE_PORT := 3001
+LEGACY_PORT := 3000
+SERVER_PORT := $($(shell echo $(BRANCH) | tr a-z A-Z)_PORT)
 NGINX_CONFIG := /etc/nginx
-SITE_ROOT := /var/www/myturn
+SITE_ROOT := /var/www/$(SERVICE)
 SITE_CONFIG := $(NGINX_CONFIG)/sites-available/$(SERVICE)
 SITE_ACTIVE := $(NGINX_CONFIG)/sites-enabled/$(SERVICE)
 TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
 DRYRUN ?= --dry-run  # for rsync
 DELETE ?= --delete
 export
-install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
+set env:
+	$@
+install: /etc/systemd/system/myturn@$(BRANCH).service $(SITE_ACTIVE) \
+ restart_$(BACKEND) restart_nginx
+/etc/systemd/system/%: /tmp/%
+	mv -f $< $@
+/tmp/myturn@%.service: myturn@.service .FORCE
+	cp -f $< $@
+	sed -i "s/$(LEGACY_PORT)/$(SERVER_PORT)/" $@
 siteinstall: | $(SITE_ROOT)
-	cd .. && sudo rsync -avcz $(DRYRUN) $(DELETE) \
+	cd .. && rsync -avcz $(DRYRUN) $(DELETE) \
 	 --exclude=configuration --exclude='.git*' \
 	 . $(SITE_ROOT)/
-/etc/init.d/%: %
-	if [ -e "$@" ]; then \
-	 if diff -q $< $@; then \
-	  echo $@ unchanged >&2; \
-	 else \
-	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
-	  sudo mv $@ $@.$(TIMESTAMP); \
-	 fi; \
-	fi
-	[ -e "$@" ] || sudo cp $< $@
-/etc/rc2.d/S01%: /etc/init.d/%
-	sudo update-rc.d $* defaults
-startup_service: /etc/init.d/$(BACKEND)
-	sudo $< restart
 $(SITE_ROOT):
-	sudo mkdir -p $@
+	mkdir -p $@
 $(SITE_ACTIVE): $(SITE_CONFIG)
-	cd $(dir $@) && sudo ln -sf ../sites-available/$(notdir $<) .
-$(SITE_CONFIG): myturn.nginx
+	cd $(dir $@) && ln -sf ../sites-available/$(notdir $<) .
+/tmp/$(SERVICE).nginx: myturn.nginx .FORCE
+	cp -f $< $@
+	sed -i -e "s/$(LEGACY_PORT)/$(SERVER_PORT)/" \
+	 -e "s/legacy/$(BRANCH)/g" \
+	 $@
+	# must leave /etc/nginx/sites-enabled/myturn for listen options
+	# FIXME: on new servers it won't be there, we'll need to specify
+	# the default_server and ipv6only=on options
+$(SITE_CONFIG): /tmp/$(SERVICE).nginx .FORCE
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \
 	  echo $@ unchanged >&2; \
 	 else \
 	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
-	  sudo mv $@ $@.$(TIMESTAMP); \
+	  mv $@ $@.$(TIMESTAMP); \
 	 fi; \
 	fi
-	[ -e "$@" ] || sudo cp $< $@
-restart_nginx: /etc/init.d/nginx
-	sudo $< restart
+	[ -e "$@" ] || mv $< $@
+restart_%:
+	-systemctl stop $*
+	systemctl daemon-reload  # in case configuration changed
+	systemctl enable $*
+	systemctl start $*
 diff:
-	diff -r -x '.git*' .. /var/www/myturn
+	diff -r -x '.git*' .. /var/www/$(SERVICE)
+.FORCE:

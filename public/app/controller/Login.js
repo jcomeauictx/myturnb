@@ -3,11 +3,11 @@ Ext.define('testing.controller.Login', {
     extend: 'Ext.app.Controller',
     requires: [
         'testing.model.DefaultUser', 
-    	'Ext.Ajax', 
-    	'Ext.Panel', 
-    	'Ext.viewport.Viewport', 
-    	'Ext.field.TextArea', 
-    	'testing.util.UrlUtils'
+        'Ext.Ajax', 
+        'Ext.Panel', 
+        'Ext.viewport.Viewport', 
+        'Ext.field.TextArea', 
+        'testing.util.UrlUtils'
     ],
     config: {
         control: {
@@ -128,6 +128,7 @@ Ext.define('testing.controller.Login', {
             this.getGroupSelect().setDisabled(true);
             // save user
             var users = Ext.getStore('defaultUsers');
+	    console.log("number of users: " + users.getCount());
             if (users.getCount() <= 0) {
                 users.add(Ext.create('testing.model.DefaultUser'));
             }
@@ -172,3 +173,6 @@ Ext.define('testing.controller.Login', {
 	    this.getUserReportView().setDisabled(true);
 	}
 });
+/*
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+*/
