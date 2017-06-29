@@ -17,8 +17,8 @@ Ext.define('testing.controller.CreateGroup', {
     },
 
     doCreateGroup: function () {
-    	var createGroup = this.getCreateGroupForm();
-    	if (!createGroup) {
+        var createGroup = this.getCreateGroupForm();
+        if (!createGroup) {
             createGroup = Ext.create('testing.view.CreateGroup', {
                 modal: true,
                 hideOnMaskTap: true,
