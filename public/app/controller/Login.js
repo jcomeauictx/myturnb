@@ -2,11 +2,11 @@
 Ext.define('testing.controller.Login', {
     extend: 'Ext.app.Controller',
     requires: [
-        'testing.model.DefaultUser', 
-        'Ext.Ajax', 
-        'Ext.Panel', 
-        'Ext.viewport.Viewport', 
-        'Ext.field.TextArea', 
+        'testing.model.DefaultUser',
+        'Ext.Ajax',
+        'Ext.Panel',
+        'Ext.viewport.Viewport',
+        'Ext.field.TextArea',
         'testing.util.UrlUtils'
     ],
     config: {
@@ -32,7 +32,7 @@ Ext.define('testing.controller.Login', {
     },
 
     doReadme: function () {
-    	var url = testing.util.UrlUtils.getBaseUrl() + 'README.md';
+        var url = testing.util.UrlUtils.getBaseUrl() + 'README.md';
         Ext.Ajax.request({
             disableCaching: false,
             url: url,
@@ -42,7 +42,7 @@ Ext.define('testing.controller.Login', {
                 var responseText = response.responseText;
                 responseText = responseText.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
                 var replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-    			responseText = responseText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+                responseText = responseText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
 
                 //console.log("success -- response: "+response.responseText);
                 var msgbox = Ext.create('Ext.Panel', {
@@ -77,19 +77,19 @@ Ext.define('testing.controller.Login', {
     },
 
     maskOn: function() {
-    	this.getMainView().setMasked({
-		    xtype: 'loadmask',
-		    message: '',
-   			indicator: true
-		});
+        this.getMainView().setMasked({
+            xtype: 'loadmask',
+            message: '',
+            indicator: true
+        });
     },
-    
+
     maskOff: function() {
-    	Ext.defer(function() {
-    		this.getMainView().setMasked(false);
-    	}, 100, this);
+        Ext.defer(function() {
+            this.getMainView().setMasked(false);
+        }, 100, this);
     },
-    
+
     doLogout: function () {
         var mainView = this.getMainView();
         var loginForm = this.getLoginForm();
@@ -128,7 +128,7 @@ Ext.define('testing.controller.Login', {
             this.getGroupSelect().setDisabled(true);
             // save user
             var users = Ext.getStore('defaultUsers');
-	    console.log("number of users: " + users.getCount());
+            console.log("number of users: " + users.getCount());
             if (users.getCount() <= 0) {
                 users.add(Ext.create('testing.model.DefaultUser'));
             }
@@ -169,9 +169,9 @@ Ext.define('testing.controller.Login', {
     },
 
     launch: function () {
-	    this.doLogout();
-	    this.getUserReportView().setDisabled(true);
-	}
+        this.doLogout();
+        this.getUserReportView().setDisabled(true);
+    }
 });
 /*
 # vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4

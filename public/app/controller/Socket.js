@@ -16,7 +16,7 @@ Ext.define('testing.controller.Socket', {
 
     doLogout: function() {
         // in doLogin() we listen to resulting disconnect event
-	console.log("flowdebug: logging out after end of discussion");
+        console.log("flowdebug: logging out after end of discussion");
         this.socket.disconnect();
     },
 
@@ -26,7 +26,7 @@ Ext.define('testing.controller.Socket', {
         var roomName = values.groupName;
         var url = testing.util.UrlUtils.getBaseUrl();
         if (url == '') {
-        	url = null;
+            url = null;
         }
         this.socket = io.connect(url, { resource: 'api/socket.io', 'force new connection': true });
         this.socket.emit('login', { name: loginName, 'room': roomName });
@@ -35,7 +35,7 @@ Ext.define('testing.controller.Socket', {
             var msg = data.reason == 'alreadyExists' ? 'User already exists' : data.reason == 'groupNotDefined' ? 'Group is not defined' : '';
             Ext.Msg.alert('', msg);
             if (data.reason == 'groupNotDefined') {
-            	Ext.getStore('groups').load();
+                Ext.getStore('groups').load();
             }
             application.fireEvent('userLoggedOut');
         });
@@ -45,10 +45,10 @@ Ext.define('testing.controller.Socket', {
         this.socket.on('userAccepted', function() {
             application.fireEvent('userLoggedIn');
         });
-	this.socket.on('sessionStarted', function() {
-	    console.log('firing initSession event');
-	    application.fireEvent('initSession');
-	});
+        this.socket.on('sessionStarted', function() {
+            console.log('firing initSession event');
+            application.fireEvent('initSession');
+        });
         this.socket.on('message', function(data) {
             // TODO this implies a dependency between server message types and client ones
             application.fireEvent(data.messageType, data);
