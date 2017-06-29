@@ -17,22 +17,22 @@ Ext.define('testing.controller.CreateGroup', {
     },
 
     doCreateGroup: function () {
-    	var createGroup = this.getCreateGroupForm();
-    	if (!createGroup) {
-	        createGroup = Ext.create('testing.view.CreateGroup', {
-	            modal: true,
-	            hideOnMaskTap: true,
-	            centered: true,
-	            /*height: '70%',*/
-	            /*width: '70%',*/
-	            minHeight: 280,
-	            minWidth: 300,
-	            margin: '0 0 0 0'
-	        });
-	        Ext.Viewport.add([createGroup]);
-    	} else {
-    		this.getGroupNameTextField().setValue("");
-    	}
+        var createGroup = this.getCreateGroupForm();
+        if (!createGroup) {
+            createGroup = Ext.create('testing.view.CreateGroup', {
+                modal: true,
+                hideOnMaskTap: true,
+                centered: true,
+                /*height: '70%',*/
+                /*width: '70%',*/
+                minHeight: 280,
+                minWidth: 300,
+                margin: '0 0 0 0'
+            });
+            Ext.Viewport.add([createGroup]);
+        } else {
+            this.getGroupNameTextField().setValue("");
+        }
         createGroup.show();
     },
 
