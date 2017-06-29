@@ -55,7 +55,7 @@ app.post('/data/groups.json', function(req, res) {
     var newGroup = new room(newGroupData);
     newGroup.id = uuid.v4();
     result.data.push(newGroup);
-    console.log('Created new group (ID: ' + newGroup.id + ' / Name: ' + newGroup.name + ' / Discussion length: ' + newGroup.discussionLength + ')');
+    console.log("flowdebug: Created new group " + JSON.stringify(newGroup));
     db.save({ id: 'groups', data: result.data });
     res.send(result.data, 200);
 });
