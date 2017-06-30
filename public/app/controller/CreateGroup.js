@@ -60,7 +60,6 @@ Ext.define('testing.controller.CreateGroup', {
         groups.add(group);
         groups.setCurrentGroupName(name);
         groups.sync();
-
         this.getCreateGroupForm().hide();
     }
 });
