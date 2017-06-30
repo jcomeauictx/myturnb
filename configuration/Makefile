@@ -49,9 +49,16 @@ $(SITE_ACTIVE): $(SITE_CONFIG)
 	sed -i -e "s/$(LEGACY_PORT)/$(SERVER_PORT)/" \
 	 -e "s/legacy/$(BRANCH)/g" \
 	 $@
-	# must leave /etc/nginx/sites-enabled/myturn for listen options
-	# FIXME: on new servers it won't be there, we'll need to specify
-	# the default_server and ipv6only=on options
+ifeq (release,$(BRANCH))
+	# remove old `myturn` configuration if it exists
+	@echo WARNING: Removing old myturn configuration >&2
+	rm -f /etc/nginx/sites-enabled/myturn
+	# make new default a redirect to the release
+	@echo WARNING: Redirecting default to release.myturn.mobi >&2
+	cp -f default.nginx /etc/nginx/sites-available/myturn-default
+	cd /etc/nginx/sites-enabled && \
+	 ln -s ../sites-available/myturn-default .
+endif
 $(SITE_CONFIG): /tmp/$(SERVICE).nginx .FORCE
 	if [ -e "$@" ]; then \
 	 if diff -q $< $@; then \
