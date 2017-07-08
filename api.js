@@ -107,6 +107,20 @@ if(process.argv.indexOf('--local') != -1){
     port = parseInt(process.env.SERVER_PORT);
 }
 
+/* exit next Sunday morning or whenever environment variables specify */
+/* make sure the systemd unit file specifies `Restart = always` */
+var restartHour = parseInt(process.env.WEEKLY_RESTART_UTC_HOUR);
+var restartDay = parseInt(process.env.WEEKLY_RESTART_UTC_DAY);
+var restartTime = new Date();
+restartTime.setUTCDate(restartTime.getUTCDate() +
+    (((7 + restartDay) % 7) || 7)); // add from 1 to 7 days
+restartTime.setUTCHours(restartHour);
+restartTime.setUTCMinutes(0);
+restartTime.setUTCSeconds(0);
+restartTime.setUTCMilliseconds(0);
+console.log("restarting in " + (restartTime - new Date()) + " milliseconds");
+setTimeout(process.exit, restartTime - new Date());
+
 /*getLocalNetworkIP(function(error, address){
     if(!error && address){
         app.listen(port);

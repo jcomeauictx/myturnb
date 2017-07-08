@@ -1,6 +1,8 @@
 alphatest:
 	NODE_PATH=/usr/local/lib/node_modules/myturn/node_modules \
 	 SERVER_PORT=3004 \
+	 WEEKLY_RESTART_UTC_DAY=0 \
+	 WEEKLY_RESTART_UTC_HOUR=0 \
 	 node api.js --local
 install:
 	# first make sure `/usr/bin/env node` returns a valid path
