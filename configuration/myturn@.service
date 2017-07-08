@@ -5,8 +5,12 @@ After=network.target
 [Service]
 WorkingDirectory=/var/www/%p-%i
 Environment=SERVER_PORT=3000
+# UTC day and hour of weekly restart, 0=Sunday, 6=Saturday
+# Add 12 to hour for afternoon, e.g. 13 means 1PM
+Environment=WEEKLY_RESTART_UTC_DAY=0
+Environment=WEEKLY_RESTART_UTC_HOUR=0
 ExecStart=/usr/bin/node api.js --local
-Restart=on-failure
+Restart=always
 SyslogIdentifier=%p-%i
 
 [Install]
