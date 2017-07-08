@@ -50,9 +50,14 @@ $(SITE_ACTIVE): $(SITE_CONFIG)
 	 -e "s/legacy/$(BRANCH)/g" \
 	 $@
 ifeq (release,$(BRANCH))
-	# remove old `myturn` configuration if it exists
-	@echo WARNING: Removing old myturn configuration >&2
-	rm -f /etc/nginx/sites-enabled/myturn
+	if [ -f /etc/nginx/sites-enabled/default ]; then \
+	 echo WARNING: Removing old default configuration >&2; \
+	 rm -f /etc/nginx/sites-enabled/default; \
+	fi
+	if [ -f /etc/nginx/sites-enabled/myturn ]; then \
+	 echo WARNING: Removing old myturn configuration >&2; \
+	 rm -f /etc/nginx/sites-enabled/myturn; \
+	fi
 	# make new default a redirect to the release
 	@echo WARNING: Redirecting default to release.myturn.mobi >&2
 	cp -f default.nginx /etc/nginx/sites-available/myturn-default
