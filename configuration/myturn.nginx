@@ -5,7 +5,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name baseline.myturn.mobi *.baseline.myturn.mobi *.baseline.myturn.old;
+    server_name legacy.myturn.mobi *.legacy.myturn.mobi *.legacy.myturn.old;
     root        /var/www/myturn-legacy/public;
     index       index.html;
 
