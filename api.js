@@ -93,7 +93,7 @@ app.configure('development', function(){
 });
 
 app.get('/data/readme.json', function(req, res) {
-    res.sendfile('/Readme.txt', {root: __dirname});
+    res.sendfile('/README.md', {root: __dirname});
 });
 
 app.configure('production', function(){
@@ -107,7 +107,8 @@ app.configure('production', function(){
 var port = 80;
 
 if(process.argv.indexOf('--local') != -1){
-    port = 3000;
+  console.log("setting server port to " + process.env.SERVER_PORT);
+  port = parseInt(process.env.SERVER_PORT);
 }
 
 /*getLocalNetworkIP(function(error, address){
