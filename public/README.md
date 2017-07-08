@@ -39,7 +39,7 @@ generally the most stable:
 - `sudo npm install --global --unsafe jcomeauictx/myturnb#beta`
 - `sudo npm install --global --unsafe jcomeauictx/myturnb#alpha`
 
-There is also a `legacy` version, but that is only for developers who want to
+There is also a `baseline` version, but that is only for developers who want to
 see if a bug is new, or inherited from the previous developer's code.
 
 When forking this project, or merging a pull request, make sure to change the
