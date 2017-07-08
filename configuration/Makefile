@@ -47,7 +47,7 @@ $(SITE_ACTIVE): $(SITE_CONFIG)
 /tmp/$(SERVICE).nginx: myturn.nginx .FORCE
 	cp -f $< $@
 	sed -i -e "s/$(LEGACY_PORT)/$(SERVER_PORT)/" \
-	 -e "s/legacy/$(BRANCH)/g" \
+	 -e "s/baseline/$(BRANCH)/g" \
 	 $@
 ifeq (release,$(BRANCH))
 	# remove old `myturn` configuration if it exists
