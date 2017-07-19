@@ -1,8 +1,8 @@
 server {
         listen   80;
         server_name  download.myturn.mobi downloads.myturn.mobi;
-        access_log  /var/log/nginx/myturn-downloads.log
-        root   /var/www/myturn-downloads/
+        access_log  /var/log/nginx/myturn-downloads.log;
+        root   /var/www/myturn-downloads;
         location / {
                autoindex on;
         }
